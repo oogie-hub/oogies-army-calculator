@@ -182,8 +182,9 @@ color:#777;
 }
 
 .hidden{
-display:none;
+display:none !important;
 }
+
 
 .modal{
 position:fixed;
