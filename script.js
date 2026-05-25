@@ -166,6 +166,10 @@ document.getElementById('remainingArcher').innerText = archRemaining.toLocaleStr
 
 }
 
+
+
+
+
 const helpModal = document.getElementById('helpModal');
 
 document.getElementById('helpButton').addEventListener('click', () => {
@@ -176,4 +180,9 @@ document.getElementById('closeHelp').addEventListener('click', () => {
 helpModal.classList.add('hidden');
 });
 
-calculate();
+helpModal.addEventListener('click', (e) => {
+if(e.target === helpModal){
+helpModal.classList.add('hidden');
+}
+});
+
