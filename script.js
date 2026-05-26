@@ -1,3 +1,82 @@
+const translations = {
+en: {
+troopsTitle: "Number of Troops",
+modifiersTitle: "Modifiers",
+rulesTitle: "Rules",
+marchesTitle: "Marches",
+infantryLabel: "Infantry",
+cavalryLabel: "Cavalry",
+archerLabel: "Archer"
+},
+es: {
+troopsTitle: "Número de Tropas",
+modifiersTitle: "Modificadores",
+rulesTitle: "Reglas",
+marchesTitle: "Marchas",
+infantryLabel: "Infantería",
+cavalryLabel: "Caballería",
+archerLabel: "Arqueros"
+},
+pt: {
+troopsTitle: "Número de Tropas",
+modifiersTitle: "Modificadores",
+rulesTitle: "Regras",
+marchesTitle: "Marchas",
+infantryLabel: "Infantaria",
+cavalryLabel: "Cavalaria",
+archerLabel: "Arqueiros"
+},
+bg: {
+troopsTitle: "Брой Войски",
+modifiersTitle: "Модификатори",
+rulesTitle: "Правила",
+marchesTitle: "Маршове",
+infantryLabel: "Пехота",
+cavalryLabel: "Кавалерия",
+archerLabel: "Стрелци"
+},
+zh: {
+troopsTitle: "部队数量",
+modifiersTitle: "修正项",
+rulesTitle: "规则",
+marchesTitle: "队列",
+infantryLabel: "步兵",
+cavalryLabel: "骑兵",
+archerLabel: "弓兵"
+}
+};
+
+
+
+document.getElementById('languageSelect').addEventListener('change', (e) => {
+
+const lang = translations[e.target.value];
+
+for (const key in lang) {
+
+const element = document.getElementById(key);
+
+if(element){
+
+element.innerText = lang[key];
+
+}
+
+}
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
 const ratio = document.getElementById('ratio');
 const customRatioContainer = document.getElementById('customRatioContainer');
 const customRatio = document.getElementById('customRatio');
