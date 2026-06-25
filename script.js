@@ -475,4 +475,211 @@ function closeModal() {
 
 
 
+/* ==========================================================
+   Input Handling
+========================================================== */
+
+/**
+ * Read every value from the page into state.
+ */
+function updateStateFromInputs() {
+
+    /* Army */
+
+    state.army.infantry =
+        toNumber(ui.infantry.value);
+
+    state.army.cavalry =
+        toNumber(ui.cavalry.value);
+
+    state.army.archers =
+        toNumber(ui.archers.value);
+
+    state.deploymentCapacity =
+        toNumber(ui.deploymentCapacity.value);
+
+    /* Modifiers */
+
+    state.troopRatio =
+        ui.troopRatio.value;
+
+    state.customRatio.infantry =
+        toNumber(ui.customInfantry.value);
+
+    state.customRatio.cavalry =
+        toNumber(ui.customCavalry.value);
+
+    state.customRatio.archers =
+        toNumber(ui.customArchers.value);
+
+    state.cityDeploymentBuff =
+        toNumber(ui.cityBuff.value);
+
+    state.giantBisonBuff =
+        toNumber(ui.bisonBuff.value);
+
+    state.formationCount =
+        toNumber(ui.formationCount.value);
+
+    /* Event */
+
+    state.battleType =
+        ui.battleType.value;
+
+    state.captainMode =
+        ui.captainMode.checked;
+
+    state.respectJoinerLimit =
+        ui.respectJoinerLimit.checked;
+
+    state.joinerLimit =
+        toNumber(ui.joinerLimit.value);
+
+}
+
+/* ==========================================================
+   Show / Hide UI
+========================================================== */
+
+function updateInterface() {
+
+    /* ---------- Custom Ratio ---------- */
+
+    const customRatio =
+
+        state.troopRatio === "custom";
+
+    ui.customRatioSection.hidden =
+        !customRatio;
+
+    ui.customRatioError.hidden =
+        customRatioIsValid();
+
+    /* ---------- Event Options ---------- */
+
+    const bearTrap =
+
+        state.battleType === "bearTrap";
+
+    ui.battleOptions.hidden =
+        !bearTrap;
+
+    ui.bearTrapOptions.hidden =
+        !bearTrap;
+
+    /* ---------- Joiner Limit ---------- */
+
+    ui.joinerLimitSection.hidden =
+        !state.respectJoinerLimit;
+
+}
+
+/* ==========================================================
+   Refresh Application
+========================================================== */
+
+function refresh() {
+
+    updateStateFromInputs();
+
+    updateInterface();
+
+    calculate();
+
+}
+
+/* ==========================================================
+   Register Event Listeners
+========================================================== */
+
+function registerEventListeners() {
+
+    const liveInputs = [
+
+        ui.infantry,
+        ui.cavalry,
+        ui.archers,
+
+        ui.deploymentCapacity,
+
+        ui.troopRatio,
+
+        ui.customInfantry,
+        ui.customCavalry,
+        ui.customArchers,
+
+        ui.cityBuff,
+        ui.bisonBuff,
+
+        ui.formationCount,
+
+        ui.battleType,
+
+        ui.captainMode,
+
+        ui.respectJoinerLimit,
+
+        ui.joinerLimit
+
+    ];
+
+    liveInputs.forEach(element => {
+
+        element.addEventListener(
+
+            "input",
+
+            refresh
+
+        );
+
+        element.addEventListener(
+
+            "change",
+
+            refresh
+
+        );
+
+    });
+
+    /* Jump Button */
+
+    ui.jumpButton.addEventListener(
+
+        "click",
+
+        scrollToFormations
+
+    );
+
+    /* Modal */
+
+    ui.helpButton.addEventListener(
+
+        "click",
+
+        openModal
+
+    );
+
+    ui.closeModal.addEventListener(
+
+        "click",
+
+        closeModal
+
+    );
+
+}
+
+
+
+
+
+
+
+
+
+
 
