@@ -1,292 +1,457 @@
-const translations = {
-en: {
-troopsTitle: "Number of Troops",
-modifiersTitle: "Modifiers",
-rulesTitle: "Rules",
-marchesTitle: "Marches",
-infantryLabel: "🛡️ Infantry",
-cavalryLabel: "🐴 Cavalry",
-archerLabel: "🏹 Archer"
-},
-es: {
-troopsTitle: "Número de Tropas",
-modifiersTitle: "Modificadores",
-rulesTitle: "Reglas",
-marchesTitle: "Marchas",
-infantryLabel: "🛡️ Infantería",
-cavalryLabel: "🐴 Caballería",
-archerLabel: "🏹 Arqueros"
-},
-pt: {
-troopsTitle: "Número de Tropas",
-modifiersTitle: "Modificadores",
-rulesTitle: "Regras",
-marchesTitle: "Marchas",
-infantryLabel: "🛡️ Infantaria",
-cavalryLabel: "🐴 Cavalaria",
-archerLabel: "Arqueiros"
-},
-bg: {
-troopsTitle: "Брой Войски",
-modifiersTitle: "Модификатори",
-rulesTitle: "Правила",
-marchesTitle: "Маршове",
-infantryLabel: "🛡️ Пехота",
-cavalryLabel: "🐴 Кавалерия",
-archerLabel: "🏹 Стрелци"
-},
-zh: {
-troopsTitle: "部队数量",
-modifiersTitle: "修正项",
-rulesTitle: "规则",
-marchesTitle: "队列",
-infantryLabel: "🛡️ 步兵",
-cavalryLabel: "🐴 骑兵",
-archerLabel: "🏹 弓兵"
-}
-};
+/* ==========================================
+   Oogie's Army Calculator v2
+   Script - Section 1
+========================================== */
 
+const $ = (id) => document.getElementById(id);
 
+/* ---------- Elements ---------- */
 
-document.getElementById('languageSelect').addEventListener('change', (e) => {
+const infantry = $("infantry");
+const cavalry = $("cavalry");
+const archer = $("archer");
+const capacity = $("capacity");
 
-const lang = translations[e.target.value];
+const ratio = $("ratio");
+const customRatio = $("customRatio");
+const customRatioContainer = $("customRatioContainer");
 
-for (const key in lang) {
+const cityBonus = $("cityBonus");
+const fearlessRoar = $("fearlessRoar");
+const formations = $("formations");
 
-const element = document.getElementById(key);
+const bearTrap = $("bearTrap");
+const fillFirst = $("fillFirst");
+const fillFirstContainer = $("fillFirstContainer");
 
-if(element){
+const joinerLimitToggle = $("joinerLimitToggle");
+const joinerLimitContainer = $("joinerLimitContainer");
+const joinerLimit = $("joinerLimit");
 
-element.innerText = lang[key];
+const runningCapacity = $("runningCapacity");
 
-}
+const remainingInfantry = $("remainingInfantry");
+const remainingCavalry = $("remainingCavalry");
+const remainingArcher = $("remainingArcher");
 
-}
+const results = $("results");
+
+const helpButton = $("helpButton");
+const helpModal = $("helpModal");
+const closeHelp = $("closeHelp");
+const closeHelpButton = $("closeHelpButton");
+
+const viewFormationsButton = $("viewFormationsButton");
+const formationsSection = $("formationsSection");
+
+/* ---------- Event Listeners ---------- */
+
+document
+    .querySelectorAll("input, select")
+    .forEach(element => {
+
+        element.addEventListener("input", calculate);
+        element.addEventListener("change", calculate);
+
+    });
+
+ratio.addEventListener("change", () => {
+
+    customRatioContainer.classList.toggle(
+        "hidden",
+        ratio.value !== "custom"
+    );
 
 });
 
+bearTrap.addEventListener("change", () => {
 
-
-
-
-
-
-
-
-
-
-
-const ratio = document.getElementById('ratio');
-const customRatioContainer = document.getElementById('customRatioContainer');
-const customRatio = document.getElementById('customRatio');
-const bearTrap = document.getElementById('bearTrap');
-const fillFirstContainer = document.getElementById('fillFirstContainer');
-const joinerLimitToggle = document.getElementById('joinerLimitToggle');
-const joinerLimitContainer = document.getElementById('joinerLimitContainer');
-
-ratio.addEventListener('change', () => {
-customRatioContainer.classList.toggle('hidden', ratio.value !== 'custom');
-calculate();
-});
-
-bearTrap.addEventListener('change', () => {
-fillFirstContainer.classList.toggle('hidden', !bearTrap.checked);
-calculate();
-});
-
-joinerLimitToggle.addEventListener('change', () => {
-joinerLimitContainer.classList.toggle('hidden', !joinerLimitToggle.checked);
-});
-
-customRatio.addEventListener('input', (e) => {
-
-let value = e.target.value.replace(/[^0-9]/g,'');
-
-if(value.length > 2 && value.length <= 4){
-value = value.slice(0,2) + '/' + value.slice(2);
-}
-
-if(value.length > 4){
-value = value.slice(0,2) + '/' + value.slice(2,4) + '/' + value.slice(4,6);
-}
-
-e.target.value = value;
+    fillFirstContainer.classList.toggle(
+        "hidden",
+        !bearTrap.checked
+    );
 
 });
 
-document.querySelectorAll('input, select').forEach((el, index, arr) => {
+joinerLimitToggle.addEventListener("change", () => {
 
-el.addEventListener('keydown', (e) => {
-
-if(e.key === 'Enter'){
-
-e.preventDefault();
-
-const next = arr[index + 1];
-
-if(next){
-next.focus();
-}
-
-}
+    joinerLimitContainer.classList.toggle(
+        "hidden",
+        !joinerLimitToggle.checked
+    );
 
 });
 
-el.addEventListener('input', calculate);
+viewFormationsButton.addEventListener("click", () => {
+
+    formationsSection.scrollIntoView({
+
+        behavior: "smooth",
+        block: "start"
+
+    });
+
 });
 
-function getRatio(){
+helpButton.addEventListener("click", () => {
 
-let value = ratio.value;
+    helpModal.classList.remove("hidden");
 
-if(value === 'custom'){
-value = customRatio.value || '10/10/80';
-}
-
-const parts = value.split('/').map(Number);
-
-return {
-inf: parts[0] / 100,
-cav: parts[1] / 100,
-arch: parts[2] / 100
-};
-
-}
-
-function calculate(){
-
-let infantry = Number(document.getElementById('infantry').value || 0);
-let cavalry = Number(document.getElementById('cavalry').value || 0);
-let archer = Number(document.getElementById('archer').value || 0);
-
-const baseCap = Number(document.getElementById('capacity').value || 0);
-const cityBonus = Number(document.getElementById('cityBonus').value || 0);
-const fearlessRoar = Number(document.getElementById('fearlessRoar').value || 0);
-
-const formations = Number(document.getElementById('formations').value || 0);
-
-const runningCapacity = Math.round(baseCap + (baseCap * cityBonus) + fearlessRoar);
-
-document.getElementById('runningCapacity').innerText = runningCapacity.toLocaleString();
-
-const results = document.getElementById('results');
-
-results.innerHTML = '';
-
-if(!formations){
-return;
-}
-
-const r = getRatio();
-
-let infRemaining = infantry;
-let cavRemaining = cavalry;
-let archRemaining = archer;
-
-for(let i=1;i<=formations;i++){
-
-let inf;
-let cav;
-let arch;
-
-if(bearTrap.checked){
-
-if(document.getElementById('fillFirst').checked && i === 1){
-
-inf = Math.min(Math.round(runningCapacity * r.inf), infRemaining);
-cav = Math.min(Math.round(runningCapacity * r.cav), cavRemaining);
-arch = Math.min(Math.round(runningCapacity * r.arch), archRemaining);
-
-}else{
-
-const remainingMarches = document.getElementById('fillFirst').checked ? formations - 1 : formations;
-
-arch = Math.floor(archRemaining / remainingMarches);
-
-const remainingCapacity = runningCapacity - arch;
-
-const ratioTotal = r.inf + r.cav;
-
-inf = Math.floor((remainingCapacity * (r.inf / ratioTotal)));
-cav = Math.floor((remainingCapacity * (r.cav / ratioTotal)));
-
-inf = Math.min(inf, infRemaining);
-cav = Math.min(cav, cavRemaining);
-
-}
-
-}else{
-
-inf = Math.floor(infantry / formations);
-cav = Math.floor(cavalry / formations);
-arch = Math.floor(archer / formations);
-
-}
-
-infRemaining -= inf;
-cavRemaining -= cav;
-archRemaining -= arch;
-
-const div = document.createElement('div');
-
-div.className = 'march';
-
-let title = `March ${i}`;
-
-if(bearTrap.checked){
-
-title = `Joiner March ${i}`;
-
-if(document.getElementById('fillFirst').checked){
-title = i === 1 ? 'Rally Captain' : `Joiner March ${i-1}`;
-}
-
-}
-
-div.innerHTML = `
-<div class="march-title">${title}</div>
-
-<div class="row">
-<span>Infantry <span class="percent">${Math.round(r.inf*100)}%</span></span>
-<strong>${inf.toLocaleString()}</strong>
-</div>
-
-<div class="row">
-<span>Cavalry <span class="percent">${Math.round(r.cav*100)}%</span></span>
-<strong>${cav.toLocaleString()}</strong>
-</div>
-
-<div class="row">
-<span>Archer <span class="percent">${Math.round(r.arch*100)}%</span></span>
-<strong>${arch.toLocaleString()}</strong>
-</div>
-`;
-
-results.appendChild(div);
-
-}
-
-document.getElementById('remainingInfantry').innerText = infRemaining.toLocaleString();
-document.getElementById('remainingCavalry').innerText = cavRemaining.toLocaleString();
-document.getElementById('remainingArcher').innerText = archRemaining.toLocaleString();
-
-}
-
-const helpModal = document.getElementById('helpModal');
-
-document.getElementById('helpButton').addEventListener('click', () => {
-helpModal.classList.remove('hidden');
 });
 
-document.getElementById('closeHelp').addEventListener('click', () => {
-helpModal.classList.add('hidden');
+closeHelp.addEventListener("click", () => {
+
+    helpModal.classList.add("hidden");
+
 });
 
-helpModal.addEventListener('click', (e) => {
-if(e.target === helpModal){
-helpModal.classList.add('hidden');
-}
+closeHelpButton.addEventListener("click", () => {
+
+    helpModal.classList.add("hidden");
+
 });
+
+helpModal.addEventListener("click", e => {
+
+    if (e.target === helpModal) {
+
+        helpModal.classList.add("hidden");
+
+    }
+
+});
+
+/* ---------- Helpers ---------- */
+
+function getValue(element) {
+
+    return Number(element.value || 0);
+
+}
+
+function getRatio() {
+
+    let value = ratio.value;
+
+    if (value === "custom") {
+
+        value = customRatio.value || "5/20/75";
+
+    }
+
+    const parts = value
+        .split("/")
+        .map(Number);
+
+    return {
+
+        inf: parts[0] / 100,
+        cav: parts[1] / 100,
+        arch: parts[2] / 100
+
+    };
+
+}
+
+/* ---------- Placeholder ---------- */
+
+function calculate() {
+
+    // Section 2
+
+}
 
 calculate();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function calculate() {
+
+    const totalInf = getValue(infantry);
+    const totalCav = getValue(cavalry);
+    const totalArch = getValue(archer);
+
+    const baseCapacity = getValue(capacity);
+
+    const city = getValue(cityBonus);
+    const bison = getValue(fearlessRoar);
+
+    const marchCount = getValue(formations);
+
+    const currentCapacity =
+        Math.round(
+            baseCapacity +
+            (baseCapacity * city) +
+            bison
+        );
+
+    runningCapacity.textContent =
+        currentCapacity.toLocaleString();
+
+    if (!marchCount) {
+
+        results.innerHTML = "";
+
+        remainingInfantry.textContent =
+            totalInf.toLocaleString();
+
+        remainingCavalry.textContent =
+            totalCav.toLocaleString();
+
+        remainingArcher.textContent =
+            totalArch.toLocaleString();
+
+        return;
+
+    }
+
+    const troopRatio = getRatio();
+
+    let infRemaining = totalInf;
+    let cavRemaining = totalCav;
+    let archRemaining = totalArch;
+
+    results.innerHTML = "";
+
+    for (let march = 1; march <= marchCount; march++) {
+
+        let inf;
+        let cav;
+        let arch;
+
+        if (bearTrap.checked) {
+
+            if (fillFirst.checked && march === 1) {
+
+                inf = Math.min(
+                    Math.round(currentCapacity * troopRatio.inf),
+                    infRemaining
+                );
+
+                cav = Math.min(
+                    Math.round(currentCapacity * troopRatio.cav),
+                    cavRemaining
+                );
+
+                arch = Math.min(
+                    Math.round(currentCapacity * troopRatio.arch),
+                    archRemaining
+                );
+
+            } else {
+
+                const marchesLeft =
+                    fillFirst.checked
+                        ? marchCount - 1
+                        : marchCount;
+
+                arch = Math.floor(
+                    archRemaining / marchesLeft
+                );
+
+                const remainingCapacity =
+                    currentCapacity - arch;
+
+                const ratioTotal =
+                    troopRatio.inf + troopRatio.cav;
+
+                inf = Math.floor(
+                    remainingCapacity *
+                    (troopRatio.inf / ratioTotal)
+                );
+
+                cav = Math.floor(
+                    remainingCapacity *
+                    (troopRatio.cav / ratioTotal)
+                );
+
+                inf = Math.min(inf, infRemaining);
+                cav = Math.min(cav, cavRemaining);
+
+            }
+
+        } else {
+
+            inf = Math.floor(totalInf / marchCount);
+            cav = Math.floor(totalCav / marchCount);
+            arch = Math.floor(totalArch / marchCount);
+
+        }
+
+        infRemaining -= inf;
+        cavRemaining -= cav;
+        archRemaining -= arch;
+
+                let title = `March ${march}`;
+
+        if (bearTrap.checked) {
+
+            title = `Joiner March ${march}`;
+
+            if (fillFirst.checked) {
+
+                title =
+                    march === 1
+                        ? "Rally Captain"
+                        : `Joiner March ${march - 1}`;
+
+            }
+
+        }
+
+        const card = document.createElement("div");
+
+        card.className = "march fade-in";
+
+        card.innerHTML = `
+
+            <div class="march-title">
+
+                ${title}
+
+            </div>
+
+            <div class="row">
+
+                <span>
+
+                    Infantry
+                    <span class="percent">
+                        ${Math.round(troopRatio.inf * 100)}%
+                    </span>
+
+                </span>
+
+                <strong>
+
+                    ${inf.toLocaleString()}
+
+                </strong>
+
+            </div>
+
+            <div class="row">
+
+                <span>
+
+                    Cavalry
+                    <span class="percent">
+                        ${Math.round(troopRatio.cav * 100)}%
+                    </span>
+
+                </span>
+
+                <strong>
+
+                    ${cav.toLocaleString()}
+
+                </strong>
+
+            </div>
+
+            <div class="row">
+
+                <span>
+
+                    Archers
+                    <span class="percent">
+                        ${Math.round(troopRatio.arch * 100)}%
+                    </span>
+
+                </span>
+
+                <strong>
+
+                    ${arch.toLocaleString()}
+
+                </strong>
+
+            </div>
+
+        `;
+
+        results.appendChild(card);
+        
+        
+        
+        
+        
+        
+
+    }
+
+    remainingInfantry.textContent =
+        infRemaining.toLocaleString();
+
+    remainingCavalry.textContent =
+        cavRemaining.toLocaleString();
+
+    remainingArcher.textContent =
+        archRemaining.toLocaleString();
+
+}
+
+
+
+
+
+
+
+
+
+/* ==========================================
+   Script - Section 4
+========================================== */
+
+/* ---------- Custom Ratio Formatting ---------- */
+
+customRatio.addEventListener("input", (e) => {
+
+    let value = e.target.value.replace(/[^0-9]/g, "");
+
+    if (value.length > 2 && value.length <= 4) {
+
+        value =
+            value.slice(0, 2) +
+            "/" +
+            value.slice(2);
+
+    }
+
+    if (value.length > 4) {
+
+        value =
+            value.slice(0, 2) +
+            "/" +
+            value.slice(2, 4) +
+            "/" +
+            value.slice(4, 6);
+
+    }
+
+    e.target.value = value;
+
+    calculate();
+
+});
+
+
+/* ---------- Initialize ---------- */
+
+calculate();
+
+
+
+
