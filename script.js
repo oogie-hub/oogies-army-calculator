@@ -682,4 +682,698 @@ function registerEventListeners() {
 
 
 
+/* ==========================================================
+   Calculator
+========================================================== */
+
+/**
+ * Main calculation function.
+ */
+function calculate() {
+
+    if (!customRatioIsValid()) {
+
+        state.formations = [];
+
+        clearStatistics();
+
+        render();
+
+        return;
+
+    }
+
+    const ratio = getSelectedRatio();
+
+    const capacity =
+        getEffectiveDeploymentCapacity();
+
+    generateFormations(
+
+        ratio,
+
+        capacity
+
+    );
+
+    calculateStatistics();
+
+    render();
+
+}
+
+/* ==========================================================
+   Clear Statistics
+========================================================== */
+
+function clearStatistics() {
+
+    state.statistics.deploymentUsed = 0;
+
+    state.statistics.remainingInfantry =
+        state.army.infantry;
+
+    state.statistics.remainingCavalry =
+        state.army.cavalry;
+
+    state.statistics.remainingArchers =
+        state.army.archers;
+
+    state.statistics.remainingTroops =
+
+        state.army.infantry +
+
+        state.army.cavalry +
+
+        state.army.archers;
+
+}
+
+/* ==========================================================
+   Statistics
+========================================================== */
+
+function calculateStatistics() {
+
+    const used = state.formations.reduce(
+
+        (total, formation) => {
+
+            return total +
+
+                formation.infantry +
+
+                formation.cavalry +
+
+                formation.archers;
+
+        },
+
+        0
+
+    );
+
+    state.statistics.deploymentUsed = used;
+
+    state.statistics.remainingInfantry =
+
+        Math.max(
+
+            0,
+
+            state.army.infantry -
+
+            state.formations.reduce(
+
+                (total, formation) =>
+
+                    total + formation.infantry,
+
+                0
+
+            )
+
+        );
+
+    state.statistics.remainingCavalry =
+
+        Math.max(
+
+            0,
+
+            state.army.cavalry -
+
+            state.formations.reduce(
+
+                (total, formation) =>
+
+                    total + formation.cavalry,
+
+                0
+
+            )
+
+        );
+
+    state.statistics.remainingArchers =
+
+        Math.max(
+
+            0,
+
+            state.army.archers -
+
+            state.formations.reduce(
+
+                (total, formation) =>
+
+                    total + formation.archers,
+
+                0
+
+            )
+
+        );
+
+    state.statistics.remainingTroops =
+
+        state.statistics.remainingInfantry +
+
+        state.statistics.remainingCavalry +
+
+        state.statistics.remainingArchers;
+
+}
+
+
+
+
+
+
+
+
+/* ==========================================================
+   Formation Engine
+   Fill Each Formation
+========================================================== */
+
+function generateFormations(ratio, capacity) {
+
+    state.formations = [];
+
+    if (capacity <= 0 || state.formationCount <= 0) {
+
+        return;
+
+    }
+
+    if (state.distributionMode === "spread") {
+
+        generateSpreadFormations(ratio);
+
+        return;
+
+    }
+
+    generateFilledFormations(ratio, capacity);
+
+}
+
+/* ==========================================================
+   Fill Each Formation
+========================================================== */
+
+function generateFilledFormations(ratio, capacity) {
+
+    let remainingInfantry = state.army.infantry;
+    let remainingCavalry = state.army.cavalry;
+    let remainingArchers = state.army.archers;
+
+    for (
+        let index = 0;
+        index < state.formationCount;
+        index++
+    ) {
+
+        const targetInfantry =
+            Math.floor(capacity * ratio.infantry / 100);
+
+        const targetCavalry =
+            Math.floor(capacity * ratio.cavalry / 100);
+
+        const targetArchers =
+            capacity -
+            targetInfantry -
+            targetCavalry;
+
+        const infantry = Math.min(
+            remainingInfantry,
+            targetInfantry
+        );
+
+        const cavalry = Math.min(
+            remainingCavalry,
+            targetCavalry
+        );
+
+        const archers = Math.min(
+            remainingArchers,
+            targetArchers
+        );
+
+        remainingInfantry -= infantry;
+        remainingCavalry -= cavalry;
+        remainingArchers -= archers;
+
+        let label = `Formation ${index + 1}`;
+
+        if (state.battleType === "bearTrap") {
+
+            if (state.captainMode) {
+
+                label =
+                    index === 0
+                        ? "Captain"
+                        : `Joiner ${index}`;
+
+            } else {
+
+                label =
+                    `Joiner ${index + 1}`;
+
+            }
+
+        }
+
+        state.formations.push({
+
+            id: index + 1,
+
+            label,
+
+            infantry,
+
+            cavalry,
+
+            archers,
+
+            total:
+
+                infantry +
+                cavalry +
+                archers
+
+        });
+
+    }
+
+    /* Respect Joiner Limit */
+
+    if (
+
+        state.battleType === "bearTrap"
+
+        &&
+
+        state.respectJoinerLimit
+
+        &&
+
+        state.joinerLimit > 0
+
+    ) {
+
+        state.formations =
+
+            state.formations.slice(
+
+                0,
+
+                state.joinerLimit +
+
+                (state.captainMode ? 1 : 0)
+
+            );
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   Formation Engine
+   Spread Across Formations
+========================================================== */
+
+function generateSpreadFormations(ratio) {
+
+    const formations = state.formationCount;
+
+    let remainingInfantry = state.army.infantry;
+    let remainingCavalry = state.army.cavalry;
+    let remainingArchers = state.army.archers;
+
+    state.formations = [];
+
+    for (let index = 0; index < formations; index++) {
+
+        const formationsLeft = formations - index;
+
+        const infantry =
+            Math.floor(remainingInfantry / formationsLeft);
+
+        const cavalry =
+            Math.floor(remainingCavalry / formationsLeft);
+
+        const archers =
+            Math.floor(remainingArchers / formationsLeft);
+
+        remainingInfantry -= infantry;
+        remainingCavalry -= cavalry;
+        remainingArchers -= archers;
+
+        let label = `Formation ${index + 1}`;
+
+        if (state.battleType === "bearTrap") {
+
+            if (state.captainMode) {
+
+                label =
+                    index === 0
+                        ? "Captain"
+                        : `Joiner ${index}`;
+
+            } else {
+
+                label =
+                    `Joiner ${index + 1}`;
+
+            }
+
+        }
+
+        state.formations.push({
+
+            id: index + 1,
+
+            label,
+
+            infantry,
+
+            cavalry,
+
+            archers,
+
+            total:
+                infantry +
+                cavalry +
+                archers
+
+        });
+
+    }
+
+    /* Respect Joiner Limit */
+
+    if (
+
+        state.battleType === "bearTrap"
+
+        &&
+
+        state.respectJoinerLimit
+
+        &&
+
+        state.joinerLimit > 0
+
+    ) {
+
+        state.formations =
+
+            state.formations.slice(
+
+                0,
+
+                state.joinerLimit +
+
+                (state.captainMode ? 1 : 0)
+
+            );
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   Render
+========================================================== */
+
+function render() {
+
+    renderStatistics();
+
+    renderFormations();
+
+}
+
+/* ==========================================================
+   Statistics
+========================================================== */
+
+function renderStatistics() {
+
+    ui.deploymentUsed.textContent =
+        formatNumber(state.statistics.deploymentUsed);
+
+    ui.remainingInfantry.textContent =
+        formatNumber(state.statistics.remainingInfantry);
+
+    ui.remainingCavalry.textContent =
+        formatNumber(state.statistics.remainingCavalry);
+
+    ui.remainingArchers.textContent =
+        formatNumber(state.statistics.remainingArchers);
+
+    ui.remainingTroops.textContent =
+        formatNumber(state.statistics.remainingTroops);
+
+}
+
+/* ==========================================================
+   Formations
+========================================================== */
+
+function renderFormations() {
+
+    ui.formations.innerHTML = "";
+
+    if (state.formations.length === 0) {
+
+        ui.formations.appendChild(ui.emptyState);
+
+        return;
+
+    }
+
+    state.formations.forEach(formation => {
+
+        ui.formations.appendChild(
+
+            createFormationCard(formation)
+
+        );
+
+    });
+
+}
+
+/* ==========================================================
+   Formation Card
+========================================================== */
+
+function createFormationCard(formation) {
+
+    const card = document.createElement("div");
+
+    card.className = "formation-card fade-in";
+
+    card.innerHTML = `
+
+        <div class="formation-header">
+
+            <div class="formation-title">
+
+                ${formation.label}
+
+            </div>
+
+            <div class="formation-status">
+
+                ${formatNumber(formation.total)}
+
+            </div>
+
+        </div>
+
+        <div class="formation-body">
+
+            <div class="formation-row">
+
+                <span class="formation-label">
+
+                    Infantry
+
+                </span>
+
+                <span class="formation-value">
+
+                    ${formatNumber(formation.infantry)}
+
+                </span>
+
+            </div>
+
+            <div class="formation-row">
+
+                <span class="formation-label">
+
+                    Cavalry
+
+                </span>
+
+                <span class="formation-value">
+
+                    ${formatNumber(formation.cavalry)}
+
+                </span>
+
+            </div>
+
+            <div class="formation-row">
+
+                <span class="formation-label">
+
+                    Archers
+
+                </span>
+
+                <span class="formation-value">
+
+                    ${formatNumber(formation.archers)}
+
+                </span>
+
+            </div>
+
+            <div class="formation-row">
+
+                <span class="formation-label">
+
+                    Total Troops
+
+                </span>
+
+                <span class="formation-value">
+
+                    ${formatNumber(formation.total)}
+
+                </span>
+
+            </div>
+
+        </div>
+
+    `;
+
+    return card;
+
+}
+
+
+
+
+
+
+
+
+/* ==========================================================
+   Startup
+========================================================== */
+
+/**
+ * Hide loading screen.
+ */
+function hideLoadingScreen() {
+
+    ui.loadingOverlay.classList.add("hidden");
+
+}
+
+/**
+ * Initialize application.
+ */
+function initializeApp() {
+
+    registerEventListeners();
+
+    refresh();
+
+    window.setTimeout(() => {
+
+        hideLoadingScreen();
+
+    }, 800);
+
+}
+
+/* ==========================================================
+   Formation Labels
+========================================================== */
+
+function getFormationLabel(index) {
+
+    if (state.battleType !== "bearTrap") {
+
+        return `Formation ${index + 1}`;
+
+    }
+
+    if (state.captainMode) {
+
+        return index === 0
+            ? "Captain"
+            : `Joiner ${index}`;
+
+    }
+
+    return `Joiner ${index + 1}`;
+
+}
+
+/* ==========================================================
+   Document Ready
+========================================================== */
+
+document.addEventListener(
+
+    "DOMContentLoaded",
+
+    () => {
+
+        initializeApp();
+
+    }
+
+);
+
+
+
+
+
+
 
