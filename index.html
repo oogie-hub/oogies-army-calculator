@@ -1,1 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Oogie's Army Calculator</title>
+
+    <meta name="description"
+          content="Build the perfect Kingshot formations with Oogie's Army Calculator.">
+
+    <meta name="theme-color"
+          content="#FF6A5C">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet"
+          href="style.css">
+</head>
+
+<body>
+
+
+
+
+
+
+  
+<!-- ========================================= -->
+<!-- Loading Screen -->
+<!-- ========================================= -->
+
+<div id="loading-screen">
+
+    <div class="loading-glow"></div>
+
+    <div class="loading-ring"></div>
+
+    <img
+        src="assets/logo/sup-logo-glow.png"
+        alt="SUP Logo"
+        class="loading-logo">
+
+</div>
+
+
+
+
+
+
+ <!-- ========================================= -->
+<!-- App -->
+<!-- ========================================= -->
+
+<div id="app">
+
+
+
+
+
+
+
+<div class="background-gradient"></div>
+
+<div class="background-glow"></div>
+
+
+
+
+
+
+<header class="app-header">
+
+    <div class="logo-section">
+
+        <img
+            src="assets/logo/sup-logo.svg"
+            alt="SUP">
+
+        <h1>Oogie's Army Calculator</h1>
+
+    </div>
+
+    <div class="header-actions">
+
+        <!-- Language -->
+
+        <!-- Menu -->
+
+    </div>
+
+</header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="background-glow"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========================================= -->
+<!-- Header -->
+<!-- ========================================= -->
+
+<header class="app-header">
+
+    <div class="logo-section">
+
+        <img
+            src="assets/logo/sup-logo.svg"
+            alt="SUP Logo"
+            class="app-logo">
+
+        <div class="title-group">
+
+            <h1 data-i18n="appTitle">
+                Oogie's Army Calculator
+            </h1>
+
+        </div>
+
+    </div>
+
+    <div class="header-actions">
+
+        <!-- Language Selector -->
+
+        <button
+            id="languageButton"
+            class="language-button">
+
+            <span class="language-icon">🌐</span>
+
+            <span
+                id="currentLanguage">
+                English
+            </span>
+
+            <span class="dropdown-arrow">
+                ▼
+            </span>
+
+        </button>
+
+        <!-- Hamburger Menu -->
+
+        <button
+            id="menuButton"
+            class="menu-button"
+            aria-label="Menu">
+
+            ☰
+
+        </button>
+
+    </div>
+
+</header>
+
+
+
+
+
+
+
+
+
+
+<!-- ========================================= -->
+<!-- Main Content -->
+<!-- ========================================= -->
+
+<main class="app-container">
+
+
+
+
+
+
+<header>
+
+<main>
+
+<section>
+
+<footer>
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+<main class="app-container">
+
+
+
+
+
+
+
+
+<!-- ========================================= -->
+<!-- Enter Your Army -->
+<!-- ========================================= -->
+
+<section class="card">
+
+    <div class="section-header">
+
+        <div class="section-title">
+
+            <img
+                src="assets/icons/shield.svg"
+                class="section-icon"
+                alt="Army">
+
+            <h2 data-i18n="enterArmy">
+                Enter Your Army
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="army-grid">
+
+        <!-- Infantry -->
+
+        <div class="army-card">
+
+            <img
+                src="assets/icons/shield.svg"
+                class="army-icon infantry-icon"
+                alt="Infantry">
+
+            <label
+                class="army-label infantry"
+                data-i18n="infantry">
+
+                Infantry
+
+            </label>
+
+            <input
+                id="infantry"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                placeholder="0">
+
+        </div>
+
+        <!-- Cavalry -->
+
+        <div class="army-card">
+
+            <img
+                src="assets/icons/horse.svg"
+                class="army-icon cavalry-icon"
+                alt="Cavalry">
+
+            <label
+                class="army-label cavalry"
+                data-i18n="cavalry">
+
+                Cavalry
+
+            </label>
+
+            <input
+                id="cavalry"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                placeholder="0">
+
+        </div>
+
+        <!-- Archers -->
+
+        <div class="army-card">
+
+            <img
+                src="assets/icons/bow.svg"
+                class="army-icon archer-icon"
+                alt="Archers">
+
+            <label
+                class="army-label archers"
+                data-i18n="archers">
+
+                Archers
+
+            </label>
+
+            <input
+                id="archers"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                placeholder="0">
+
+        </div>
+
+        <!-- Deployment Capacity -->
+
+        <div class="army-card">
+
+            <div class="capacity-header">
+
+                <img
+                    src="assets/icons/castle.svg"
+                    class="army-icon capacity-icon"
+                    alt="Deployment Capacity">
+
+                <button
+                    id="deploymentHelp"
+                    class="help-button">
+
+                    ?
+
+                </button>
+
+            </div>
+
+            <label
+                class="army-label capacity"
+                data-i18n="deploymentCapacity">
+
+                Deployment Capacity
+
+            </label>
+
+            <input
+                id="deploymentCapacity"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                placeholder="0">
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+  
+
+<!-- ========================================= -->
+<!-- Modifiers -->
+<!-- ========================================= -->
+
+<section class="card">
+
+    <div class="section-header">
+
+        <div class="section-title">
+
+            <img
+                src="assets/icons/gear.svg"
+                class="section-icon"
+                alt="Modifiers">
+
+            <h2 data-i18n="modifiers">
+                Modifiers
+            </h2>
+
+        </div>
+
+    </div>
+
+    <!-- Troop Legend -->
+
+    <div class="troop-legend">
+
+        <div class="legend-item">
+
+            <img
+                src="assets/icons/shield.svg"
+                class="legend-icon infantry-icon"
+                alt="Infantry">
+
+            <span class="infantry">
+                Infantry
+            </span>
+
+        </div>
+
+        <div class="legend-item">
+
+            <img
+                src="assets/icons/horse.svg"
+                class="legend-icon cavalry-icon"
+                alt="Cavalry">
+
+            <span class="cavalry">
+                Cavalry
+            </span>
+
+        </div>
+
+        <div class="legend-item">
+
+            <img
+                src="assets/icons/bow.svg"
+                class="legend-icon archer-icon"
+                alt="Archers">
+
+            <span class="archers">
+                Archers
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- Formation Ratio -->
+
+    <div class="setting-row">
+
+        <div class="setting-label">
+
+            <img
+                src="assets/icons/ratio.svg"
+                class="modifier-icon"
+                alt="Formation Ratio">
+
+            <span data-i18n="formationRatio">
+                Formation Ratio
+            </span>
+
+        </div>
+
+        <select id="formationRatio">
+
+            <option value="equalize">
+                Equalize
+            </option>
+
+            <option value="balanced">
+                Balanced
+            </option>
+
+            <option value="70300">
+                70 / 30 / 0
+            </option>
+
+            <option value="523">
+                5 / 2 / 3
+            </option>
+
+        </select>
+
+    </div>
+
+    <!-- City Buff -->
+
+    <div class="setting-row">
+
+        <div class="setting-label">
+
+            <img
+                src="assets/icons/city.svg"
+                class="modifier-icon"
+                alt="City Buff">
+
+            <span data-i18n="cityBuff">
+                City Buff
+            </span>
+
+        </div>
+
+        <select id="cityBuff">
+
+            <option value="0">0%</option>
+            <option value="5">5%</option>
+            <option value="10">10%</option>
+            <option value="15">15%</option>
+            <option value="20">20%</option>
+            <option value="25">25%</option>
+
+        </select>
+
+    </div>
+
+    <!-- Giant Bison -->
+
+    <div class="setting-row">
+
+        <div class="setting-label">
+
+            <img
+                src="assets/icons/bison.svg"
+                class="modifier-icon"
+                alt="Giant Bison">
+
+            <span data-i18n="giantBison">
+                Giant Bison
+            </span>
+
+        </div>
+
+        <select id="giantBison">
+
+            <option value="0">
+                No
+            </option>
+
+            <option value="5000">
+                + 5,000 Troops
+            </option>
+
+        </select>
+
+    </div>
+
+    <!-- Number of Formations -->
+
+    <div class="setting-row">
+
+        <div class="setting-label">
+
+            <img
+                src="assets/icons/formation-count.svg"
+                class="modifier-icon"
+                alt="Number of Formations">
+
+            <span data-i18n="formations">
+                Number of Formations
+            </span>
+
+        </div>
+
+        <select id="formationCount">
+
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option selected>5</option>
+
+        </select>
+
+    </div>
+
+    <!-- Distribution Mode -->
+
+    <div class="setting-row">
+
+        <div class="setting-label">
+
+            <img
+                src="assets/icons/distribution.svg"
+                class="modifier-icon"
+                alt="Distribution">
+
+            <span data-i18n="distributionMode">
+                Distribution Mode
+            </span>
+
+        </div>
+
+        <select id="distributionMode">
+
+            <option value="fill">
+                Fill Each Formation
+            </option>
+
+            <option value="equalize">
+                Equalize Formations
+            </option>
+
+        </select>
+
+    </div>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========================================= -->
+<!-- Event -->
+<!-- ========================================= -->
+
+<section class="card">
+
+    <div class="section-header">
+
+        <div class="section-title">
+
+            <img
+                src="assets/icons/event.svg"
+                class="section-icon"
+                alt="Event">
+
+            <h2 data-i18n="event">
+                Event
+            </h2>
+
+        </div>
+
+    </div>
+
+    <!-- Event Type -->
+
+    <div class="setting-row">
+
+        <div class="setting-label">
+
+            <span data-i18n="selectEvent">
+                Select Event
+            </span>
+
+        </div>
+
+        <select id="eventType">
+
+            <option value="standard" selected>
+                Standard
+            </option>
+
+            <option value="bearTrap">
+                Bear Trap
+            </option>
+
+            <option value="crazyJoe">
+                Crazy Joe
+            </option>
+
+            <option value="castleBattle">
+                Castle Battle
+            </option>
+
+            <option value="sunfire">
+                Sunfire Castle
+            </option>
+
+            <option value="frostDragon">
+                Frost Dragon Tyrant
+            </option>
+
+            <option value="foundry">
+                Foundry Battle
+            </option>
+
+        </select>
+
+    </div>
+
+    <!-- Captain Mode -->
+
+    <div class="toggle-row">
+
+        <div class="setting-label">
+
+            <img
+                src="assets/icons/crown.svg"
+                class="modifier-icon"
+                alt="Captain">
+
+            <span data-i18n="captainMode">
+                Captain Mode
+            </span>
+
+        </div>
+
+        <label class="switch">
+
+            <input
+                id="captainMode"
+                type="checkbox">
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+    <!-- Event Specific Options -->
+
+    <div
+        id="eventOptions"
+        class="event-options">
+
+        <!--
+            Event-specific controls
+            are generated here by script.js.
+        -->
+
+    </div>
+
+</section>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========================================= -->
+<!-- Live Statistics -->
+<!-- ========================================= -->
+
+<section class="card">
+
+    <div class="section-header">
+
+        <div class="section-title">
+
+            <img
+                src="assets/icons/chart.svg"
+                class="section-icon"
+                alt="Statistics">
+
+            <h2 data-i18n="liveStatistics">
+                Live Statistics
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="statistics-grid">
+
+        <!-- Remaining Infantry -->
+
+        <div class="stat-card">
+
+            <img
+                src="assets/icons/shield.svg"
+                class="stat-icon infantry-icon"
+                alt="Infantry">
+
+            <span
+                class="stat-label infantry"
+                data-i18n="remainingInfantry">
+
+                Remaining Infantry
+
+            </span>
+
+            <span
+                id="remainingInfantry"
+                class="stat-value">
+
+                0
+
+            </span>
+
+        </div>
+
+        <!-- Remaining Cavalry -->
+
+        <div class="stat-card">
+
+            <img
+                src="assets/icons/horse.svg"
+                class="stat-icon cavalry-icon"
+                alt="Cavalry">
+
+            <span
+                class="stat-label cavalry"
+                data-i18n="remainingCavalry">
+
+                Remaining Cavalry
+
+            </span>
+
+            <span
+                id="remainingCavalry"
+                class="stat-value">
+
+                0
+
+            </span>
+
+        </div>
+
+        <!-- Remaining Archers -->
+
+        <div class="stat-card">
+
+            <img
+                src="assets/icons/bow.svg"
+                class="stat-icon archer-icon"
+                alt="Archers">
+
+            <span
+                class="stat-label archers"
+                data-i18n="remainingArchers">
+
+                Remaining Archers
+
+            </span>
+
+            <span
+                id="remainingArchers"
+                class="stat-value">
+
+                0
+
+            </span>
+
+        </div>
+
+        <!-- Deployment Capacity Used -->
+
+        <div class="stat-card">
+
+            <img
+                src="assets/icons/castle.svg"
+                class="stat-icon capacity-icon"
+                alt="Deployment">
+
+            <span
+                class="stat-label capacity"
+                data-i18n="deploymentUsed">
+
+                Deployment Capacity Used
+
+            </span>
+
+            <span
+                id="deploymentUsed"
+                class="stat-value">
+
+                0%
+
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<!-- ========================================= -->
+<!-- Actions -->
+<!-- ========================================= -->
+
+<section class="action-bar">
+
+    <button
+        id="viewFormationsButton"
+        class="primary-button">
+
+        <span data-i18n="viewFormations">
+            View Formations
+        </span>
+
+    </button>
+
+    <button
+        id="copyFormationsButton"
+        class="secondary-button">
+
+        <img
+            src="assets/icons/copy.svg"
+            class="button-icon"
+            alt="Copy">
+
+        <span data-i18n="copyAll">
+            Copy All
+        </span>
+
+    </button>
+
+</section>
+
+<!-- ========================================= -->
+<!-- Generated Formations -->
+<!-- ========================================= -->
+
+<section class="card">
+
+    <div class="section-header">
+
+        <div class="section-title">
+
+            <img
+                src="assets/icons/formations.svg"
+                class="section-icon"
+                alt="Formations">
+
+            <h2 data-i18n="generatedFormations">
+
+                Generated Formations
+
+            </h2>
+
+        </div>
+
+    </div>
+
+    <!-- Empty State -->
+
+    <div
+        id="emptyState"
+        class="empty-state">
+
+        <div class="empty-icon">
+
+            ✨
+
+        </div>
+
+        <p>
+
+            Enter your army,<br>
+            choose your settings,<br>
+            then tap<br><br>
+
+            <strong>View Formations</strong>
+
+        </p>
+
+    </div>
+
+    <!-- Formation Cards -->
+
+    <div
+        id="formationsContainer"
+        class="formations-container">
+
+        <!-- Generated by script.js -->
+
+    </div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- Toast Notifications -->
+<!-- ========================================= -->
+
+<div
+    id="toastContainer"
+    class="toast-container">
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<!-- ========================================= -->
+<!-- Deployment Capacity Help Modal -->
+<!-- ========================================= -->
+
+<dialog id="deploymentHelpModal"
+        class="modal">
+
+    <div class="modal-content">
+
+        <button
+            id="closeHelpModal"
+            class="modal-close">
+
+            ✕
+
+        </button>
+
+        <img
+            src="assets/images/deployment-help.jpg"
+            alt="Deployment Capacity Help"
+            class="help-image">
+
+        <h3 data-i18n="deploymentCapacity">
+
+            Deployment Capacity
+
+        </h3>
+
+        <p data-i18n="deploymentHelpText">
+
+            Your Deployment Capacity is the maximum number of troops
+            you can send in a single formation before buffs.
+
+        </p>
+
+    </div>
+
+</dialog>
+
+<!-- ========================================= -->
+<!-- Language Menu -->
+<!-- ========================================= -->
+
+<div
+    id="languageMenu"
+    class="language-menu">
+
+</div>
+
+</main>
+
+<!-- ========================================= -->
+<!-- Footer -->
+<!-- ========================================= -->
+
+<footer class="app-footer">
+
+    <p>
+
+        Made with
+        <span class="heart">❤️</span>
+
+        by
+
+        <strong>Oogie</strong>
+
+        &amp;
+
+        her pal
+
+        <strong>ChatGPT</strong>
+
+    </p>
+
+    <small>
+
+        Version 2.0
+
+    </small>
+
+</footer>
+
+</div>
+
+<!-- ========================================= -->
+<!-- Scripts -->
+<!-- ========================================= -->
+
+<script src="translations.js"></script>
+<script src="script.js"></script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+  
