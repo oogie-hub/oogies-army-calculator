@@ -1,625 +1,964 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" dir="ltr">
 <head>
-
     <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <title>Oogie's Army Calculator v2</title>
 
-    <title>Oogie's Army Calculator</title>
+    <meta
+        name="description"
+        content="The ultimate Kingshot army formation calculator."
+    >
 
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
+    <meta
+        name="theme-color"
+        content="#ff7a18"
+    >
 
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
+    <meta
+        name="color-scheme"
+        content="light"
+    >
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet">
+    <link
+        rel="manifest"
+        href="manifest.json"
+    >
 
-    <link rel="stylesheet"
-          href="style.css">
+    <link
+        rel="icon"
+        type="image/svg+xml"
+        href="assets/favicon.svg"
+    >
 
+    <link
+        rel="apple-touch-icon"
+        href="assets/apple-touch-icon.png"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 </head>
 
 <body>
 
-<div class="app">
-
-    <!-- ========================= -->
-    <!-- Header -->
-    <!-- ========================= -->
-
-    <header class="header">
-
-        <h1>
-
-            Oogie's Army Calculator
-
-        </h1>
-
-        <div class="language-group">
-
-            <label for="languageSelect">
-
-                Language
-
-            </label>
-
-            <select id="languageSelect">
-
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="pt">Português</option>
-                <option value="de">Deutsch</option>
-                <option value="bg">Български</option>
-                <option value="zh">中文</option>
-                <option value="ar">العربية</option>
-
-            </select>
-
-        </div>
-
-    </header>
-
-    <!-- ========================= -->
-    <!-- Army Setup -->
-    <!-- ========================= -->
-
-    <section class="card">
-
-        <h2 id="troopsTitle">
-
-            Army Setup
-
-        </h2>
-
-        <div class="form-group">
-
-            <label id="infantryLabel"
-                   for="infantry">
-
-                🛡️ Infantry
-
-            </label>
-
-            <input
-                id="infantry"
-                type="number"
-                placeholder="0">
-
-        </div>
-
-        <div class="form-group">
-
-            <label id="cavalryLabel"
-                   for="cavalry">
-
-                🐴 Cavalry
-
-            </label>
-
-            <input
-                id="cavalry"
-                type="number"
-                placeholder="0">
-
-        </div>
-
-        <div class="form-group">
-
-            <label id="archerLabel"
-                   for="archer">
-
-                🏹 Archer
-
-            </label>
-
-            <input
-                id="archer"
-                type="number"
-                placeholder="0">
-
-        </div>
-
-        <div class="form-group">
-
-            <div class="label-row">
-
-                <label for="capacity">
-
-                    Deployment Capacity
-
-                </label>
-
-                <button
-                    id="helpButton"
-                    class="help-button"
-                    type="button">
-
-                    ?
-
-                </button>
-
-            </div>
-
-            <input
-                id="capacity"
-                type="number"
-                placeholder="0">
-
-            <small class="helper-text">
-
-                Where can I find my deployment capacity?
-
-            </small>
-
-        </div>
-
-    </section>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <!-- ========================= -->
-    <!-- Modifiers -->
-    <!-- ========================= -->
-
-    <section class="card">
-
-        <h2 id="modifiersTitle">
-
-            Modifiers
-
-        </h2>
-
-        <div class="form-group">
-
-            <label for="ratio">
-
-                Troop Ratio
-
-            </label>
-
-            <select id="ratio">
-
-                <option value="5/20/75">
-                    5 / 20 / 75
-                </option>
-
-                <option value="10/10/80">
-                    10 / 10 / 80
-                </option>
-
-                <option value="50/20/30">
-                    50 / 20 / 30
-                </option>
-
-                <option value="60/40/0">
-                    60 / 40 / 0
-                </option>
-
-                <option value="70/30/0">
-                    70 / 30 / 0
-                </option>
-
-                <option value="custom">
-                    Custom Ratio
-                </option>
-
-            </select>
-
-        </div>
-
-        <div
-            id="customRatioContainer"
-            class="hidden">
-
-            <div class="form-group">
-
-                <label for="customRatio">
-
-                    Custom Ratio
-
-                </label>
-
-                <input
-                    id="customRatio"
-                    type="text"
-                    placeholder="00/00/00">
-
-            </div>
-
-        </div>
-
-        <div class="form-group">
-
-            <label for="cityBonus">
-
-                City Deployment Buff
-
-            </label>
-
-            <select id="cityBonus">
-
-                <option value="0">
-                    None
-                </option>
-
-                <option value="0.10">
-                    +10%
-                </option>
-
-                <option value="0.20">
-                    +20%
-                </option>
-
-            </select>
-
-        </div>
-
-        <div class="form-group">
-
-            <label for="fearlessRoar">
-
-                Giant Bison Buff
-
-            </label>
-
-            <select id="fearlessRoar">
-
-                <option value="0">None</option>
-
-                <option value="1500">Level 1 (+1,500)</option>
-                <option value="3000">Level 2 (+3,000)</option>
-                <option value="4500">Level 3 (+4,500)</option>
-                <option value="6000">Level 4 (+6,000)</option>
-                <option value="7500">Level 5 (+7,500)</option>
-                <option value="9000">Level 6 (+9,000)</option>
-                <option value="10500">Level 7 (+10,500)</option>
-                <option value="12000">Level 8 (+12,000)</option>
-                <option value="13500">Level 9 (+13,500)</option>
-                <option value="15000">Level 10 (+15,000)</option>
-
-            </select>
-
-        </div>
-
-        <div class="form-group">
-
-            <label for="formations">
-
-                Number of Formations
-
-            </label>
-
-            <select id="formations">
-
-                <option value="">Select</option>
-
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-
-            </select>
-
-        </div>
-
-    </section>
-
-
-
-
-
-
-
-
-
-    <!-- ========================= -->
-    <!-- Rules -->
-    <!-- ========================= -->
-
-    <section class="card">
-
-        <h2 id="rulesTitle">
-
-            Rules
-
-        </h2>
-
-        <div class="toggle-row">
-
-            <label for="bearTrap">
-
-                Bear Trap Labels
-
-            </label>
-
-            <label class="switch">
-
-                <input
-                    id="bearTrap"
-                    type="checkbox">
-
-                <span class="slider"></span>
-
-            </label>
-
-        </div>
-
-        <div
-            id="fillFirstContainer"
-            class="hidden">
-
-            <div class="toggle-row">
-
-                <label for="fillFirst">
-
-                    Fill Rally Captain First
-
-                </label>
-
-                <label class="switch">
-
-                    <input
-                        id="fillFirst"
-                        type="checkbox">
-
-                    <span class="slider"></span>
-
-                </label>
-
-            </div>
-
-        </div>
-
-        <div class="toggle-row">
-
-            <label for="joinerLimitToggle">
-
-                Respect Joiner Limit
-
-            </label>
-
-            <label class="switch">
-
-                <input
-                    id="joinerLimitToggle"
-                    type="checkbox">
-
-                <span class="slider"></span>
-
-            </label>
-
-        </div>
-
-        <div
-            id="joinerLimitContainer"
-            class="hidden">
-
-            <div class="form-group">
-
-                <label for="joinerLimit">
-
-                    Joiner Army Limit
-
-                </label>
-
-                <input
-                    id="joinerLimit"
-                    type="number"
-                    placeholder="0">
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ========================= -->
-    <!-- View Formations -->
-    <!-- ========================= -->
-
-    <section class="card action-card">
-
-        <button
-            id="viewFormationsButton"
-            class="primary-button"
-            type="button">
-
-            View Formations
-
-        </button>
-
-    </section>
-    
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-
-    <!-- ========================= -->
-    <!-- Your Formations -->
-    <!-- ========================= -->
-
-    <section
-        id="formationsSection"
-        class="card">
-
-        <h2 id="formationsTitle">
-
-            Your Formations
-
-        </h2>
-
-        <div id="results">
-
-        </div>
-
-    </section>
-
-
-    <!-- ========================= -->
-    <!-- Live Stats -->
-    <!-- ========================= -->
-
-    <section class="card">
-
-        <h2>
-
-            Live Stats
-
-        </h2>
-
-        <div class="stat-row">
-
-            <span>
-
-                Deployment Capacity
-
-            </span>
-
-            <strong id="runningCapacity">
-
-                0
-
-            </strong>
-
-        </div>
-
-        <div class="stat-row">
-
-            <span>
-
-                Remaining Infantry
-
-            </span>
-
-            <strong id="remainingInfantry">
-
-                0
-
-            </strong>
-
-        </div>
-
-        <div class="stat-row">
-
-            <span>
-
-                Remaining Cavalry
-
-            </span>
-
-            <strong id="remainingCavalry">
-
-                0
-
-            </strong>
-
-        </div>
-
-        <div class="stat-row">
-
-            <span>
-
-                Remaining Archers
-
-            </span>
-
-            <strong id="remainingArcher">
-
-                0
-
-            </strong>
-
-        </div>
-
-    </section>
-
-
-    <!-- ========================= -->
-    <!-- Help Modal -->
-    <!-- ========================= -->
+    <!-- Loading Overlay -->
 
     <div
-        id="helpModal"
-        class="modal hidden">
-
-        <div class="modal-content">
-
-            <button
-                id="closeHelp"
-                class="close-button"
-                type="button">
-
-                ×
-
-            </button>
-
-            <h2>
-
-                Where can I find my Deployment Capacity?
-
-            </h2>
-
-            <p>
-
-                Enter the Deployment Capacity shown on your Deploy screen.
-                City Deployment Buff and Giant Bison Buff should be selected separately in the calculator.
-
-            </p>
+        id="loadingOverlay"
+        class="loading-overlay"
+        aria-hidden="true"
+    >
+        <div class="loading-content">
 
             <img
-                src="assets/deployment-capacity.png"
-                alt="Deployment Capacity Help">
+                src="assets/loading.svg"
+                alt=""
+                class="loading-logo"
+            >
 
-            <button
-                id="closeHelpButton"
-                class="primary-button"
-                type="button">
-
-                Got It
-
-            </button>
+            <p
+                id="loadingText"
+                class="loading-text"
+            >
+                Loading...
+            </p>
 
         </div>
-
     </div>
 
-</div>
+    <!-- Application -->
 
-<script src="translations.js"></script>
-<script src="script.js"></script>
+    <div
+        id="app"
+        class="app"
+    >
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <!-- Header -->
 
-</body>
-</html>
+        <header
+            class="app-header"
+            role="banner"
+        >
+
+            <div class="header-brand">
+
+                <img
+                    src="assets/logo.svg"
+                    alt="Oogie's Army Calculator"
+                    id="appLogo"
+                    class="app-logo"
+                >
+
+                <div class="header-text">
+
+                    <h1
+                        id="appTitle"
+                        class="app-title"
+                    >
+                        Oogie's Army Calculator
+                    </h1>
+
+                    <p
+                        id="appSubtitle"
+                        class="app-subtitle"
+                    >
+                        Kingshot Army Formation Calculator
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="header-actions">
+
+                <label
+                    for="languageSelect"
+                    id="languageLabel"
+                    class="visually-hidden"
+                >
+                    Language
+                </label>
+
+                <select
+                    id="languageSelect"
+                    class="language-select"
+                    aria-label="Language"
+                >
+                    <option value="en">English</option>
+                    <option value="de">Deutsch</option>
+                    <option value="es">Español</option>
+                    <option value="pt">Português</option>
+                    <option value="bg">Български</option>
+                    <option value="zh">中文</option>
+                    <option value="ar">العربية</option>
+                </select>
+
+            </div>
+
+        </header>
+
+        <main
+            id="mainContent"
+            class="main-content"
+        >
+        
+        
+        
+        
+        
+
+
+
+
+
+
+
+
+
+            <!-- Army Setup -->
+
+            <section
+                id="armySetupSection"
+                class="card"
+                aria-labelledby="armySetupHeading"
+            >
+
+                <div class="card-header">
+
+                    <h2
+                        id="armySetupHeading"
+                        class="card-title"
+                    >
+                        Army Setup
+                    </h2>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="input-grid">
+
+                        <!-- Infantry -->
+
+                        <div class="input-group">
+
+                            <label
+                                for="infantryInput"
+                                id="infantryLabel"
+                                class="input-label"
+                            >
+                                Infantry
+                            </label>
+
+                            <input
+                                id="infantryInput"
+                                class="number-input"
+                                type="number"
+                                inputmode="numeric"
+                                min="0"
+                                step="1"
+                                placeholder="0"
+                                autocomplete="off"
+                                aria-describedby="infantryHelp"
+                            >
+
+                            <small
+                                id="infantryHelp"
+                                class="input-help"
+                            >
+                                Total Infantry available.
+                            </small>
+
+                        </div>
+
+                        <!-- Cavalry -->
+
+                        <div class="input-group">
+
+                            <label
+                                for="cavalryInput"
+                                id="cavalryLabel"
+                                class="input-label"
+                            >
+                                Cavalry
+                            </label>
+
+                            <input
+                                id="cavalryInput"
+                                class="number-input"
+                                type="number"
+                                inputmode="numeric"
+                                min="0"
+                                step="1"
+                                placeholder="0"
+                                autocomplete="off"
+                                aria-describedby="cavalryHelp"
+                            >
+
+                            <small
+                                id="cavalryHelp"
+                                class="input-help"
+                            >
+                                Total Cavalry available.
+                            </small>
+
+                        </div>
+
+                        <!-- Archer -->
+
+                        <div class="input-group">
+
+                            <label
+                                for="archerInput"
+                                id="archerLabel"
+                                class="input-label"
+                            >
+                                Archer
+                            </label>
+
+                            <input
+                                id="archerInput"
+                                class="number-input"
+                                type="number"
+                                inputmode="numeric"
+                                min="0"
+                                step="1"
+                                placeholder="0"
+                                autocomplete="off"
+                                aria-describedby="archerHelp"
+                            >
+
+                            <small
+                                id="archerHelp"
+                                class="input-help"
+                            >
+                                Total Archers available.
+                            </small>
+
+                        </div>
+
+                        <!-- Deployment Capacity -->
+
+                        <div class="input-group">
+
+                            <div class="label-with-action">
+
+                                <label
+                                    for="deploymentCapacityInput"
+                                    id="deploymentCapacityLabel"
+                                    class="input-label"
+                                >
+                                    Deployment Capacity
+                                </label>
+
+                                <button
+                                    id="deploymentCapacityHelpButton"
+                                    class="help-button"
+                                    type="button"
+                                    aria-label="Deployment Capacity Help"
+                                    aria-haspopup="dialog"
+                                    aria-controls="deploymentCapacityModal"
+                                >
+                                    ?
+                                </button>
+
+                            </div>
+
+                            <input
+                                id="deploymentCapacityInput"
+                                class="number-input"
+                                type="number"
+                                inputmode="numeric"
+                                min="0"
+                                step="1"
+                                placeholder="0"
+                                autocomplete="off"
+                                aria-describedby="deploymentCapacityHelp"
+                            >
+
+                            <small
+                                id="deploymentCapacityHelp"
+                                class="input-help"
+                            >
+                                Enter your current in-game deployment capacity.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+            
+            
+            
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+            <!-- Modifiers -->
+
+            <section
+                id="modifiersSection"
+                class="card"
+                aria-labelledby="modifiersHeading"
+            >
+
+                <div class="card-header">
+
+                    <h2
+                        id="modifiersHeading"
+                        class="card-title"
+                    >
+                        Modifiers
+                    </h2>
+
+                </div>
+
+                <div class="card-body">
+
+                    <!-- Troop Ratio -->
+
+                    <div class="input-group">
+
+                        <label
+                            for="troopRatioSelect"
+                            id="troopRatioLabel"
+                            class="input-label"
+                        >
+                            Troop Ratio
+                        </label>
+
+                        <select
+                            id="troopRatioSelect"
+                            class="select-input"
+                            aria-describedby="troopRatioHelp"
+                        >
+                            <option value="custom">Custom</option>
+                            <option value="50-20-30">50 / 20 / 30</option>
+                            <option value="60-20-20">60 / 20 / 20</option>
+                            <option value="40-30-30">40 / 30 / 30</option>
+                            <option value="33-33-34">33 / 33 / 34</option>
+                        </select>
+
+                        <small
+                            id="troopRatioHelp"
+                            class="input-help"
+                        >
+                            Select a preset ratio or create your own.
+                        </small>
+
+                    </div>
+
+                    <!-- Custom Ratio -->
+
+                    <div
+                        id="customRatioSection"
+                        class="custom-ratio-section"
+                    >
+
+                        <div class="ratio-grid">
+
+                            <div class="input-group">
+
+                                <label
+                                    for="customInfantryRatio"
+                                    class="input-label"
+                                >
+                                    Infantry %
+                                </label>
+
+                                <input
+                                    id="customInfantryRatio"
+                                    class="number-input"
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    step="1"
+                                    inputmode="numeric"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+                            <div class="input-group">
+
+                                <label
+                                    for="customCavalryRatio"
+                                    class="input-label"
+                                >
+                                    Cavalry %
+                                </label>
+
+                                <input
+                                    id="customCavalryRatio"
+                                    class="number-input"
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    step="1"
+                                    inputmode="numeric"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+                            <div class="input-group">
+
+                                <label
+                                    for="customArcherRatio"
+                                    class="input-label"
+                                >
+                                    Archer %
+                                </label>
+
+                                <input
+                                    id="customArcherRatio"
+                                    class="number-input"
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    step="1"
+                                    inputmode="numeric"
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+                        </div>
+
+                        <p
+                            id="customRatioError"
+                            class="validation-message"
+                            role="alert"
+                            aria-live="polite"
+                            hidden
+                        >
+                            Custom troop ratios must total 100%.
+                        </p>
+
+                    </div>
+
+                    <!-- City Deployment Buff -->
+
+                    <div class="input-group">
+
+                        <label
+                            for="cityDeploymentBuff"
+                            class="input-label"
+                        >
+                            City Deployment Buff
+                        </label>
+
+                        <select
+                            id="cityDeploymentBuff"
+                            class="select-input"
+                        >
+                            <option value="0">0%</option>
+                            <option value="5">5%</option>
+                            <option value="10">10%</option>
+                            <option value="15">15%</option>
+                            <option value="20">20%</option>
+                            <option value="25">25%</option>
+                        </select>
+
+                    </div>
+
+                    <!-- Giant Bison Buff -->
+
+                    <div class="input-group">
+
+                        <label
+                            for="giantBisonBuff"
+                            class="input-label"
+                        >
+                            Giant Bison Buff
+                        </label>
+
+                        <select
+                            id="giantBisonBuff"
+                            class="select-input"
+                        >
+                            <option value="0">0</option>
+                            <option value="5000">5,000</option>
+                            <option value="10000">10,000</option>
+                            <option value="15000">15,000</option>
+                            <option value="20000">20,000</option>
+                        </select>
+
+                    </div>
+
+                    <!-- Number of Formations -->
+
+                    <div class="input-group">
+
+                        <label
+                            for="formationCount"
+                            class="input-label"
+                        >
+                            Number of Formations
+                        </label>
+
+                        <select
+                            id="formationCount"
+                            class="select-input"
+                        >
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5" selected>5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </section>
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+
+
+            <!-- Rules -->
+
+            <section
+                id="rulesSection"
+                class="card"
+                aria-labelledby="rulesHeading"
+            >
+
+                <div class="card-header">
+
+                    <h2
+                        id="rulesHeading"
+                        class="card-title"
+                    >
+                        Rules
+                    </h2>
+
+                </div>
+
+                <div class="card-body">
+
+                    <!-- Bear Trap Labels -->
+
+                    <div class="toggle-row">
+
+                        <div class="toggle-content">
+
+                            <label
+                                for="bearTrapLabels"
+                                id="bearTrapLabelsLabel"
+                                class="toggle-label"
+                            >
+                                Bear Trap Labels
+                            </label>
+
+                            <p class="toggle-description">
+                                Label formations as Rally Captain and Joiners.
+                            </p>
+
+                        </div>
+
+                        <label class="switch">
+
+                            <input
+                                id="bearTrapLabels"
+                                type="checkbox"
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+                    <!-- Fill Rally Captain First -->
+
+                    <div class="toggle-row">
+
+                        <div class="toggle-content">
+
+                            <label
+                                for="fillCaptainFirst"
+                                id="fillCaptainFirstLabel"
+                                class="toggle-label"
+                            >
+                                Fill Rally Captain First
+                            </label>
+
+                            <p class="toggle-description">
+                                Allocate troops to the Rally Captain before Joiners.
+                            </p>
+
+                        </div>
+
+                        <label class="switch">
+
+                            <input
+                                id="fillCaptainFirst"
+                                type="checkbox"
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+                    <!-- Respect Joiner Limit -->
+
+                    <div class="toggle-row">
+
+                        <div class="toggle-content">
+
+                            <label
+                                for="respectJoinerLimit"
+                                id="respectJoinerLimitLabel"
+                                class="toggle-label"
+                            >
+                                Respect Joiner Limit
+                            </label>
+
+                            <p class="toggle-description">
+                                Prevent Joiner formations from exceeding the specified limit.
+                            </p>
+
+                        </div>
+
+                        <label class="switch">
+
+                            <input
+                                id="respectJoinerLimit"
+                                type="checkbox"
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+                    <!-- Joiner Limit -->
+
+                    <div
+                        id="joinerLimitSection"
+                        class="input-group"
+                    >
+
+                        <label
+                            for="joinerLimitInput"
+                            id="joinerLimitLabel"
+                            class="input-label"
+                        >
+                            Joiner Limit
+                        </label>
+
+                        <input
+                            id="joinerLimitInput"
+                            class="number-input"
+                            type="number"
+                            inputmode="numeric"
+                            min="0"
+                            step="1"
+                            placeholder="0"
+                            autocomplete="off"
+                            aria-describedby="joinerLimitHelp"
+                        >
+
+                        <small
+                            id="joinerLimitHelp"
+                            class="input-help"
+                        >
+                            Maximum deployment capacity allowed for each Joiner formation.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- View Formations -->
+
+            <section
+                id="actionsSection"
+                class="actions-section"
+            >
+
+                <button
+                    id="viewFormationsButton"
+                    class="primary-button"
+                    type="button"
+                    aria-label="View Formations"
+                >
+                    View Formations
+                </button>
+
+            </section>
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Generated Formations -->
+
+            <section
+                id="generatedFormationsSection"
+                class="results-section"
+                aria-labelledby="generatedFormationsHeading"
+            >
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h2
+                            id="generatedFormationsHeading"
+                            class="card-title"
+                        >
+                            Generated Formations
+                        </h2>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div
+                            id="formationsContainer"
+                            class="formations-container"
+                            aria-live="polite"
+                            aria-atomic="true"
+                        >
+                            <!-- Generated dynamically by script.js -->
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Live Statistics -->
+
+            <section
+                id="liveStatisticsSection"
+                class="card"
+                aria-labelledby="liveStatisticsHeading"
+            >
+
+                <div class="card-header">
+
+                    <h2
+                        id="liveStatisticsHeading"
+                        class="card-title"
+                    >
+                        Live Statistics
+                    </h2>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="statistics-grid">
+
+                        <div class="stat-card">
+
+                            <span
+                                id="deploymentCapacityStatLabel"
+                                class="stat-label"
+                            >
+                                Running Deployment Capacity
+                            </span>
+
+                            <span
+                                id="runningDeploymentCapacity"
+                                class="stat-value"
+                                aria-live="polite"
+                            >
+                                0
+                            </span>
+
+                        </div>
+
+                        <div class="stat-card">
+
+                            <span
+                                id="remainingInfantryLabel"
+                                class="stat-label"
+                            >
+                                Remaining Infantry
+                            </span>
+
+                            <span
+                                id="remainingInfantry"
+                                class="stat-value"
+                                aria-live="polite"
+                            >
+                                0
+                            </span>
+
+                        </div>
+
+                        <div class="stat-card">
+
+                            <span
+                                id="remainingCavalryLabel"
+                                class="stat-label"
+                            >
+                                Remaining Cavalry
+                            </span>
+
+                            <span
+                                id="remainingCavalry"
+                                class="stat-value"
+                                aria-live="polite"
+                            >
+                                0
+                            </span>
+
+                        </div>
+
+                        <div class="stat-card">
+
+                            <span
+                                id="remainingArcherLabel"
+                                class="stat-label"
+                            >
+                                Remaining Archers
+                            </span>
+
+                            <span
+                                id="remainingArchers"
+                                class="stat-value"
+                                aria-live="polite"
+                            >
+                                0
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+
+
+
+
+
 
 
 
