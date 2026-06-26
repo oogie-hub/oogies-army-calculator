@@ -1,0 +1,483 @@
+/* =====================================================================
+   OOGIE'S ARMY CALCULATOR — STYLESHEET
+   Color system, glass UI, loading screen, formation cards.
+   ===================================================================== */
+
+/* --------------------------- DESIGN TOKENS --------------------------- */
+:root {
+  /* Troop colors */
+  --color-infantry: #4ADE80;      /* light bright green */
+  --color-cavalry: #A855F7;       /* purple */
+  --color-archers: #F472B6;       /* pink */
+
+  /* Functional colors */
+  --color-capacity: #FB923C;      /* orange - deployment capacity */
+  --color-modifier: #FB923C;      /* orange - modifier icons */
+  --color-section: #F472B6;       /* pink - section icons */
+
+  /* Gradient */
+  --gradient-brand: linear-gradient(135deg, #FB923C 0%, #F472B6 100%);
+  --gradient-brand-soft: linear-gradient(135deg, rgba(251,146,60,0.16) 0%, rgba(244,114,182,0.16) 100%);
+
+  /* Neutrals */
+  --bg-base: #F7F6F9;
+  --bg-glass: rgba(255, 255, 255, 0.62);
+  --bg-glass-strong: rgba(255, 255, 255, 0.8);
+  --border-glass: rgba(255, 255, 255, 0.5);
+  --text-primary: #1F1B24;
+  --text-secondary: #6B6573;
+  --text-muted: #9A93A3;
+  --shadow-soft: 0 8px 30px rgba(31, 27, 36, 0.08);
+  --shadow-soft-lg: 0 16px 48px rgba(31, 27, 36, 0.12);
+
+  /* Radii */
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-pill: 999px;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* Typography */
+  --font-base: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ------------------------------ RESET -------------------------------- */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-base);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+img { display: block; max-width: 100%; }
+button { font-family: inherit; cursor: pointer; }
+input { font-family: inherit; }
+ul { list-style: none; margin: 0; padding: 0; }
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid var(--color-capacity);
+  outline-offset: 2px;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Reusable icon coloring */
+.icon { width: 18px; height: 18px; flex-shrink: 0; }
+.icon-pink     { filter: none; color: var(--color-section); }
+.icon-orange   { color: var(--color-modifier); }
+.icon-infantry { color: var(--color-infantry); }
+.icon-cavalry  { color: var(--color-cavalry); }
+.icon-archers  { color: var(--color-archers); }
+/* SVGs are loaded via <img>, so recolor using CSS filters per palette bucket */
+img.icon-pink    { filter: invert(56%) sepia(54%) saturate(2476%) hue-rotate(298deg) brightness(101%) contrast(98%); }
+img.icon-orange  { filter: invert(64%) sepia(54%) saturate(1652%) hue-rotate(341deg) brightness(103%) contrast(97%); }
+img.icon-infantry{ filter: invert(74%) sepia(46%) saturate(572%) hue-rotate(80deg) brightness(99%) contrast(89%); }
+img.icon-cavalry { filter: invert(46%) sepia(57%) saturate(1885%) hue-rotate(247deg) brightness(98%) contrast(96%); }
+img.icon-archers { filter: invert(67%) sepia(36%) saturate(2700%) hue-rotate(296deg) brightness(101%) contrast(96%); }
+
+/* ============================ LOADING SCREEN ========================= */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: opacity 0.6s ease;
+}
+.loading-screen.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.loading-glow {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(251,146,60,0.25) 0%, rgba(244,114,182,0.18) 45%, rgba(255,255,255,0) 75%);
+  filter: blur(10px);
+}
+.loading-ring {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  border-top-color: var(--color-capacity);
+  border-right-color: var(--color-archers);
+  animation: spin 1.1s linear infinite;
+}
+.loading-logo {
+  width: 64px;
+  height: 64px;
+  position: relative;
+  border-radius: 18px;
+  box-shadow: var(--shadow-soft-lg);
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ================================ APP SHELL =========================== */
+.app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-5);
+  animation: fadeIn 0.6s ease both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+  flex-wrap: wrap;
+}
+.brand { display: flex; align-items: center; gap: var(--space-3); }
+.brand-icon { width: 48px; height: 48px; border-radius: var(--radius-sm); box-shadow: var(--shadow-soft); }
+.brand-title { font-size: 1.4rem; margin: 0; letter-spacing: -0.01em; }
+.brand-tagline { margin: 2px 0 0; color: var(--text-secondary); font-size: 0.85rem; }
+
+/* Language switcher */
+.lang-switcher { position: relative; }
+.lang-button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-pill);
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px);
+}
+.lang-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background: var(--bg-glass-strong);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft-lg);
+  backdrop-filter: blur(20px);
+  padding: var(--space-2);
+  max-height: 320px;
+  overflow-y: auto;
+  min-width: 200px;
+  z-index: 50;
+}
+.lang-menu[hidden] { display: none; }
+.lang-option {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.lang-option:hover, .lang-option.is-active {
+  background: var(--gradient-brand-soft);
+}
+
+/* Layout grid: settings left, results right */
+.layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: var(--space-5);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+.panel { display: flex; flex-direction: column; gap: var(--space-4); }
+
+/* ============================ GLASS CARD ============================= */
+.card.glass {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 1rem;
+  margin: 0 0 var(--space-4);
+  font-weight: 700;
+}
+
+/* ============================== FIELDS ================================ */
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+.field { display: flex; flex-direction: column; gap: var(--space-2); }
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.field-input {
+  border: 1px solid var(--border-glass);
+  background: rgba(255,255,255,0.7);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.field-input:focus {
+  border-color: var(--color-capacity);
+  box-shadow: 0 0 0 4px rgba(251,146,60,0.15);
+}
+
+/* ============================ SEGMENTED CONTROL ======================= */
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.segmented-btn {
+  flex: 1 1 auto;
+  border: 1px solid var(--border-glass);
+  background: rgba(255,255,255,0.5);
+  border-radius: var(--radius-pill);
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.segmented-btn.is-active {
+  background: var(--gradient-brand);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: var(--shadow-soft);
+}
+
+/* ============================== TOGGLES =============================== */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  cursor: pointer;
+}
+.toggle-row:last-of-type { border-bottom: none; }
+.toggle-text { display: flex; flex-direction: column; flex: 1; gap: 2px; }
+.toggle-title { font-size: 0.9rem; font-weight: 600; }
+.toggle-hint { font-size: 0.75rem; color: var(--text-muted); }
+.toggle-input { display: none; }
+.toggle-switch {
+  width: 44px;
+  height: 26px;
+  border-radius: var(--radius-pill);
+  background: rgba(0,0,0,0.12);
+  position: relative;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+.toggle-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+}
+.toggle-input:checked + .toggle-switch {
+  background: var(--gradient-brand);
+}
+.toggle-input:checked + .toggle-switch::after {
+  transform: translateX(18px);
+}
+
+/* ============================== BUTTONS =============================== */
+.button-row { display: flex; gap: var(--space-3); margin-top: var(--space-4); }
+.btn {
+  flex: 1;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 13px 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: var(--gradient-brand);
+  color: #fff;
+  box-shadow: var(--shadow-soft);
+}
+.btn-ghost {
+  background: rgba(0,0,0,0.05);
+  color: var(--text-secondary);
+}
+
+/* ============================= STATISTICS ============================= */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+@media (max-width: 520px) {
+  .stats-grid { grid-template-columns: 1fr; }
+}
+.stat-tile {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 4px var(--space-2);
+  background: rgba(255,255,255,0.5);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+.stat-dot { width: 10px; height: 10px; border-radius: 50%; grid-row: span 2; }
+.dot-infantry { background: var(--color-infantry); }
+.dot-cavalry  { background: var(--color-cavalry); }
+.dot-archers  { background: var(--color-archers); }
+.dot-capacity { background: var(--color-capacity); }
+.stat-label { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
+.stat-value { font-size: 1.05rem; font-weight: 800; grid-column: 2; }
+
+/* ============================= FORMATIONS ============================= */
+.formations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-4);
+}
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--space-6) var(--space-4);
+  font-size: 0.9rem;
+}
+
+.formation-card {
+  background: rgba(255,255,255,0.55);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  backdrop-filter: blur(14px);
+}
+.formation-card.is-captain {
+  border-color: rgba(251,146,60,0.5);
+  box-shadow: 0 0 0 2px rgba(251,146,60,0.18), var(--shadow-soft);
+}
+
+.formation-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.formation-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+.formation-badge .icon { width: 20px; height: 20px; }
+.formation-number {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--gradient-brand-soft);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.formation-troops {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+}
+.troop-infantry { color: var(--color-infantry); }
+.troop-cavalry  { color: var(--color-cavalry); }
+.troop-archers  { color: var(--color-archers); }
+
+/* Segmented rounded progress bar - represents troop COMPOSITION */
+.composition-bar {
+  width: 100%;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  display: flex;
+  background: rgba(0,0,0,0.06);
+}
+.composition-segment { height: 100%; }
+.segment-infantry { background: var(--color-infantry); }
+.segment-cavalry  { background: var(--color-cavalry); }
+.segment-archers  { background: var(--color-archers); }
+
+.formation-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+}
+.capacity-check { color: var(--color-infantry); font-weight: 800; }
+.capacity-percent { color: var(--text-secondary); font-weight: 800; }
+
+/* ============================== FOOTER ================================= */
+.app-footer {
+  margin-top: var(--space-6);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+/* ============================ RESPONSIVE TWEAKS ========================= */
+@media (max-width: 600px) {
+  .app { padding: var(--space-3); }
+  .brand-title { font-size: 1.15rem; }
+  .card.glass { padding: var(--space-4); border-radius: var(--radius-md); }
+}

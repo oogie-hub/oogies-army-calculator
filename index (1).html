@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oogie's Army Calculator</title>
+<link rel="icon" type="image/svg+xml" href="assets/images/app-icon.svg" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================== LOADING SCREEN ===================== -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-glow"></div>
+    <div class="loading-ring"></div>
+    <img class="loading-logo" src="assets/images/app-icon.svg" alt="Oogie's Army Calculator" />
+  </div>
+
+  <!-- ===================== APP ROOT ===================== -->
+  <div id="app" class="app" hidden>
+
+    <!-- ----------- HEADER ----------- -->
+    <header class="app-header">
+      <div class="brand">
+        <img class="brand-icon" src="assets/images/app-icon.svg" alt="" />
+        <div class="brand-text">
+          <h1 class="brand-title" data-i18n="appName">Oogie's Army Calculator</h1>
+          <p class="brand-tagline" data-i18n="tagline">Kingshot formation planner</p>
+        </div>
+      </div>
+
+      <div class="lang-switcher">
+        <button id="langButton" class="lang-button" aria-haspopup="listbox" aria-expanded="false">
+          <img src="assets/icons/section.svg" class="icon icon-pink" alt="" />
+          <span id="langButtonLabel">English</span>
+        </button>
+        <ul id="langMenu" class="lang-menu" role="listbox" hidden></ul>
+      </div>
+    </header>
+
+    <main class="layout">
+
+      <!-- ----------- SETTINGS PANEL ----------- -->
+      <section class="panel settings-panel">
+
+        <!-- Troops -->
+        <div class="card glass">
+          <h2 class="card-title">
+            <img src="assets/icons/section.svg" class="icon icon-pink" alt="" />
+            <span data-i18n="sectionTroops">Your Troops</span>
+          </h2>
+          <div class="field-grid">
+            <label class="field">
+              <span class="field-label troop-infantry">
+                <img src="assets/icons/infantry.svg" class="icon icon-infantry" alt="" />
+                <span data-i18n="labelInfantry">Infantry</span>
+              </span>
+              <input type="text" inputmode="numeric" id="inputInfantry" class="field-input" value="0" />
+            </label>
+            <label class="field">
+              <span class="field-label troop-cavalry">
+                <img src="assets/icons/cavalry.svg" class="icon icon-cavalry" alt="" />
+                <span data-i18n="labelCavalry">Cavalry</span>
+              </span>
+              <input type="text" inputmode="numeric" id="inputCavalry" class="field-input" value="0" />
+            </label>
+            <label class="field">
+              <span class="field-label troop-archers">
+                <img src="assets/icons/archer.svg" class="icon icon-archers" alt="" />
+                <span data-i18n="labelArchers">Archers</span>
+              </span>
+              <input type="text" inputmode="numeric" id="inputArchers" class="field-input" value="0" />
+            </label>
+          </div>
+        </div>
+
+        <!-- Event -->
+        <div class="card glass">
+          <h2 class="card-title">
+            <img src="assets/icons/section.svg" class="icon icon-pink" alt="" />
+            <span data-i18n="sectionEvent">Event</span>
+          </h2>
+          <div class="segmented" id="eventSegmented" data-group="event">
+            <button class="segmented-btn is-active" data-value="standard" data-i18n="eventStandard">Standard</button>
+            <button class="segmented-btn" data-value="beartrap" data-i18n="eventBearTrap">Bear Trap</button>
+            <button class="segmented-btn" data-value="castle" data-i18n="eventCastle">Castle Battle</button>
+          </div>
+        </div>
+
+        <!-- Formation Ratio -->
+        <div class="card glass">
+          <h2 class="card-title">
+            <img src="assets/icons/section.svg" class="icon icon-pink" alt="" />
+            <span data-i18n="sectionRatio">Formation Ratio</span>
+          </h2>
+          <div class="segmented" id="ratioSegmented" data-group="ratio">
+            <button class="segmented-btn is-active" data-value="equalize" data-i18n="ratioEqualize">Equalize</button>
+            <button class="segmented-btn" data-value="523" data-i18n="ratio523">5 / 2 / 3</button>
+            <button class="segmented-btn" data-value="7030" data-i18n="ratio7030">70 / 30 / 0</button>
+          </div>
+        </div>
+
+        <!-- Distribution Mode -->
+        <div class="card glass">
+          <h2 class="card-title">
+            <img src="assets/icons/section.svg" class="icon icon-pink" alt="" />
+            <span data-i18n="sectionDistribution">Distribution Mode</span>
+          </h2>
+          <div class="segmented" id="distributionSegmented" data-group="distribution">
+            <button class="segmented-btn is-active" data-value="fill" data-i18n="distFill">Fill Each Formation</button>
+            <button class="segmented-btn" data-value="equalize" data-i18n="distEqualize">Equalize</button>
+          </div>
+        </div>
+
+        <!-- Modifiers -->
+        <div class="card glass">
+          <h2 class="card-title">
+            <img src="assets/icons/section.svg" class="icon icon-pink" alt="" />
+            <span data-i18n="sectionModifiers">Modifiers</span>
+          </h2>
+
+          <label class="toggle-row">
+            <img src="assets/icons/city-buff.svg" class="icon icon-orange" alt="" />
+            <span class="toggle-text">
+              <span class="toggle-title" data-i18n="modCityBuff">City Buff</span>
+              <span class="toggle-hint" id="cityBuffHint">+30,000 capacity per formation</span>
+            </span>
+            <input type="checkbox" id="toggleCityBuff" class="toggle-input" />
+            <span class="toggle-switch"></span>
+          </label>
+
+          <label class="toggle-row">
+            <img src="assets/icons/giant-bison.svg" class="icon icon-orange" alt="" />
+            <span class="toggle-text">
+              <span class="toggle-title" data-i18n="modGiantBison">Giant Bison</span>
+              <span class="toggle-hint" id="bisonHint">+5,000 capacity per formation</span>
+            </span>
+            <input type="checkbox" id="toggleGiantBison" class="toggle-input" />
+            <span class="toggle-switch"></span>
+          </label>
+
+          <label class="toggle-row">
+            <img src="assets/icons/captain.svg" class="icon icon-orange" alt="" />
+            <span class="toggle-text">
+              <span class="toggle-title" data-i18n="modCaptainMode">Captain Mode</span>
+              <span class="toggle-hint" data-i18n="modCaptainModeHint">Marks formation 1 as Captain</span>
+            </span>
+            <input type="checkbox" id="toggleCaptainMode" class="toggle-input" />
+            <span class="toggle-switch"></span>
+          </label>
+        </div>
+
+        <!-- Setup -->
+        <div class="card glass">
+          <h2 class="card-title">
+            <img src="assets/icons/settings.svg" class="icon icon-pink" alt="" />
+            <span data-i18n="sectionSetup">Setup</span>
+          </h2>
+          <div class="field-grid">
+            <label class="field">
+              <span class="field-label">
+                <img src="assets/icons/formations.svg" class="icon icon-pink" alt="" />
+                <span data-i18n="labelFormationCount">Formation Count</span>
+              </span>
+              <input type="text" inputmode="numeric" id="inputFormationCount" class="field-input" value="5" />
+            </label>
+            <label class="field">
+              <span class="field-label">
+                <img src="assets/icons/capacity.svg" class="icon icon-orange" alt="" />
+                <span data-i18n="labelDeploymentCapacity">Deployment Capacity</span>
+              </span>
+              <input type="text" inputmode="numeric" id="inputCapacity" class="field-input" value="300000" />
+            </label>
+          </div>
+          <div class="button-row">
+            <button id="btnCalculate" class="btn btn-primary" data-i18n="btnCalculate">Calculate</button>
+            <button id="btnReset" class="btn btn-ghost" data-i18n="btnReset">Reset</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ----------- RESULTS PANEL ----------- -->
+      <section class="panel results-panel">
+
+        <!-- Live Statistics -->
+        <div class="card glass">
+          <h2 class="card-title">
+            <img src="assets/icons/stats.svg" class="icon icon-pink" alt="" />
+            <span data-i18n="sectionStats">Live Statistics</span>
+          </h2>
+          <div class="stats-grid">
+            <div class="stat-tile">
+              <span class="stat-dot dot-infantry"></span>
+              <span class="stat-label" data-i18n="statRemainingInfantry">Remaining Infantry</span>
+              <span class="stat-value" id="statRemainingInfantry">0</span>
+            </div>
+            <div class="stat-tile">
+              <span class="stat-dot dot-cavalry"></span>
+              <span class="stat-label" data-i18n="statRemainingCavalry">Remaining Cavalry</span>
+              <span class="stat-value" id="statRemainingCavalry">0</span>
+            </div>
+            <div class="stat-tile">
+              <span class="stat-dot dot-archers"></span>
+              <span class="stat-label" data-i18n="statRemainingArchers">Remaining Archers</span>
+              <span class="stat-value" id="statRemainingArchers">0</span>
+            </div>
+            <div class="stat-tile">
+              <span class="stat-dot dot-capacity"></span>
+              <span class="stat-label" data-i18n="statCapacityUsed">Deployment Capacity Used</span>
+              <span class="stat-value" id="statCapacityUsed">0 / 0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formations -->
+        <div class="card glass formations-card">
+          <h2 class="card-title">
+            <img src="assets/icons/formations.svg" class="icon icon-pink" alt="" />
+            <span data-i18n="sectionFormations">Formations</span>
+          </h2>
+          <div id="formationsGrid" class="formations-grid">
+            <p class="empty-state" id="emptyState" data-i18n="emptyFormations">
+              Enter your troops and press Calculate to build formations.
+            </p>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p data-i18n="footerNote">Calculations are estimates based on the settings above.</p>
+    </footer>
+  </div>
+
+  <script src="translations.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
