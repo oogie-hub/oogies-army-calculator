@@ -1,1 +1,2128 @@
+/* ==========================================================
+   Oogie's Army Calculator v2
+   Part 1
+   Design System • Reset • Global Styles
+========================================================== */
+
+/* ==========================================================
+   Design Tokens
+========================================================== */
+
+:root {
+
+    /* Brand Colors */
+
+    --color-infantry: #59D66F;
+    --color-cavalry: #8B5CF6;
+    --color-archers: #FF5FA2;
+    --color-capacity: #FF9A3D;
+
+    --color-primary: #FF5FA2;
+    --color-secondary: #FF9A3D;
+
+    --gradient-primary:
+        linear-gradient(
+            135deg,
+            #FF9A3D 0%,
+            #FF6F7D 45%,
+            #FF5FA2 100%
+        );
+
+    --gradient-background:
+        radial-gradient(
+            circle at top,
+            rgba(255,154,61,.16),
+            rgba(255,95,162,.08),
+            transparent 70%
+        );
+
+    /* Neutrals */
+
+    --white: #FFFFFF;
+    --off-white: #FCFCFD;
+    --border: #ECECF3;
+    --text: #26283A;
+    --text-light: #75788C;
+
+    /* Shadows */
+
+    --shadow-soft:
+        0 8px 24px rgba(0,0,0,.06);
+
+    --shadow-hover:
+        0 12px 32px rgba(0,0,0,.10);
+
+    /* Radius */
+
+    --radius-card: 22px;
+    --radius-button: 16px;
+    --radius-input: 14px;
+    --radius-pill: 999px;
+
+    /* Animation */
+
+    --transition-fast: .18s ease;
+    --transition-normal: .30s ease;
+    --transition-slow: .50s ease;
+
+    /* Layout */
+
+    --max-width: 720px;
+
+}
+
+/* ==========================================================
+   Reset
+========================================================== */
+
+*,
+*::before,
+*::after {
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+body {
+
+    font-family: "Inter", sans-serif;
+
+    color: var(--text);
+
+    background: var(--off-white);
+
+    min-height: 100vh;
+
+    overflow-x: hidden;
+
+    -webkit-font-smoothing: antialiased;
+
+    text-rendering: optimizeLegibility;
+
+}
+
+/* ==========================================================
+   Images
+========================================================== */
+
+img {
+
+    display: block;
+
+    max-width: 100%;
+
+}
+
+/* ==========================================================
+   Buttons
+========================================================== */
+
+button {
+
+    font: inherit;
+
+    border: none;
+
+    background: none;
+
+    cursor: pointer;
+
+}
+
+/* ==========================================================
+   Inputs
+========================================================== */
+
+input,
+select {
+
+    font: inherit;
+
+    outline: none;
+
+    border: none;
+
+}
+
+/* ==========================================================
+   Links
+========================================================== */
+
+a {
+
+    color: inherit;
+
+    text-decoration: none;
+
+}
+
+/* ==========================================================
+   Lists
+========================================================== */
+
+ul,
+ol {
+
+    list-style: none;
+
+}
+
+/* ==========================================================
+   App
+========================================================== */
+
+#app {
+
+    position: relative;
+
+    max-width: var(--max-width);
+
+    margin: auto;
+
+    padding: 22px;
+
+    z-index: 2;
+
+}
+
+/* ==========================================================
+   Background
+========================================================== */
+
+.background-gradient {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: var(--gradient-background);
+
+    pointer-events: none;
+
+    z-index: -2;
+
+}
+
+.background-glow {
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(255,95,162,.10),
+            transparent 45%
+        );
+
+    pointer-events: none;
+
+    z-index: -1;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   Loading Screen
+========================================================== */
+
+#loading-screen {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--off-white);
+
+    z-index: 99999;
+
+    overflow: hidden;
+
+    transition:
+        opacity .6s ease,
+        visibility .6s ease;
+
+}
+
+#loading-screen.hidden {
+
+    opacity: 0;
+    visibility: hidden;
+
+}
+
+/* Soft Background Glow */
+
+.loading-glow {
+
+    position: absolute;
+
+    width: 520px;
+    height: 520px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,154,61,.20) 0%,
+            rgba(255,95,162,.14) 45%,
+            transparent 75%
+        );
+
+    filter: blur(30px);
+
+    animation:
+        glowPulse 4s ease-in-out infinite;
+
+}
+
+/* Logo */
+
+.loading-logo {
+
+    position: relative;
+
+    width: 170px;
+
+    z-index: 5;
+
+    animation:
+        logoFloat 2.8s ease-in-out infinite;
+
+}
+
+/* Broken Gradient Ring */
+
+.loading-ring {
+
+    position: absolute;
+
+    width: 245px;
+    height: 245px;
+
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            from 0deg,
+            transparent 0deg,
+            transparent 70deg,
+
+            #FF9A3D 70deg,
+            #FF7A63 150deg,
+            #FF5FA2 235deg,
+
+            transparent 235deg,
+            transparent 360deg
+        );
+
+    mask:
+        radial-gradient(
+            farthest-side,
+            transparent calc(100% - 5px),
+            black calc(100% - 4px)
+        );
+
+    -webkit-mask:
+        radial-gradient(
+            farthest-side,
+            transparent calc(100% - 5px),
+            black calc(100% - 4px)
+        );
+
+    animation:
+        rotateRing 3.5s linear infinite;
+
+}
+
+/* ==========================================================
+   Loading Animations
+========================================================== */
+
+@keyframes rotateRing {
+
+    from {
+
+        transform: rotate(0deg);
+
+    }
+
+    to {
+
+        transform: rotate(360deg);
+
+    }
+
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+
+        transform: scale(1);
+        opacity: .85;
+
+    }
+
+    50% {
+
+        transform: scale(1.06);
+        opacity: 1;
+
+    }
+
+}
+
+@keyframes logoFloat {
+
+    0%,
+    100% {
+
+        transform:
+            translateY(0px);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-6px);
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.app-header {
+
+    position: sticky;
+    top: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+    padding: 14px 18px;
+
+    background: rgba(255,255,255,.82);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,.65);
+
+    border-radius: var(--radius-card);
+
+    box-shadow: var(--shadow-soft);
+
+    z-index: 100;
+
+}
+
+/* ==========================================================
+   Logo Section
+========================================================== */
+
+.logo-section {
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+}
+
+.app-logo {
+
+    width: 52px;
+    height: 52px;
+
+    object-fit: contain;
+
+    flex-shrink: 0;
+
+}
+
+.title-group {
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+.title-group h1 {
+
+    font-size: 1.28rem;
+    font-weight: 800;
+
+    color: var(--text);
+
+    line-height: 1.1;
+
+    letter-spacing: -.02em;
+
+}
+
+/* ==========================================================
+   Header Actions
+========================================================== */
+
+.header-actions {
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+}
+
+/* ==========================================================
+   Language Button
+========================================================== */
+
+.language-button {
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 10px 14px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-pill);
+
+    transition: var(--transition-fast);
+
+}
+
+.language-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow-soft);
+
+}
+
+.language-icon {
+
+    font-size: 1rem;
+
+}
+
+#currentLanguage {
+
+    font-weight: 600;
+
+    color: var(--text);
+
+}
+
+.dropdown-arrow {
+
+    font-size: .72rem;
+
+    color: var(--text-light);
+
+}
+
+/* ==========================================================
+   Menu Button
+========================================================== */
+
+.menu-button {
+
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    font-size: 1.3rem;
+
+    transition: var(--transition-fast);
+
+}
+
+.menu-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow-soft);
+
+}
+
+/* ==========================================================
+   Button Press Animation
+========================================================== */
+
+.language-button:active,
+.menu-button:active {
+
+    transform: scale(.96);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   Cards
+========================================================== */
+
+.card {
+
+    background: rgba(255,255,255,.82);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,.75);
+
+    border-radius: var(--radius-card);
+
+    box-shadow: var(--shadow-soft);
+
+    padding: 22px;
+
+    margin-bottom: 22px;
+
+    transition: var(--transition-normal);
+
+}
+
+.card:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow-hover);
+
+}
+
+/* ==========================================================
+   Section Header
+========================================================== */
+
+.section-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+
+}
+
+.section-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+.section-title h2 {
+
+    font-size: 1.2rem;
+
+    font-weight: 700;
+
+    color: var(--text);
+
+}
+
+/* Pink section icons */
+
+.section-icon {
+
+    width: 24px;
+    height: 24px;
+
+    color: var(--color-primary);
+
+}
+
+/* ==========================================================
+   Army Grid
+========================================================== */
+
+.army-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(150px,1fr)
+        );
+
+    gap: 18px;
+
+}
+
+/* ==========================================================
+   Army Cards
+========================================================== */
+
+.army-card {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    padding: 18px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+
+    transition: var(--transition-fast);
+
+}
+
+.army-card:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow-soft);
+
+}
+
+/* ==========================================================
+   Army Icons
+========================================================== */
+
+.army-icon {
+
+    width: 34px;
+
+    height: 34px;
+
+}
+
+/* Troop Colors */
+
+.infantry-icon,
+.infantry {
+
+    color: var(--color-infantry);
+
+}
+
+.cavalry-icon,
+.cavalry {
+
+    color: var(--color-cavalry);
+
+}
+
+.archer-icon,
+.archers {
+
+    color: var(--color-archers);
+
+}
+
+.capacity-icon,
+.capacity {
+
+    color: var(--color-capacity);
+
+}
+
+/* ==========================================================
+   Labels
+========================================================== */
+
+.army-label {
+
+    font-size: .95rem;
+
+    font-weight: 700;
+
+}
+
+/* ==========================================================
+   Inputs
+========================================================== */
+
+input,
+select {
+
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 16px;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-input);
+
+    background: var(--white);
+
+    color: var(--text);
+
+    transition: var(--transition-fast);
+
+}
+
+input:focus,
+select:focus {
+
+    border-color: var(--color-primary);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(255,95,162,.15);
+
+}
+
+/* ==========================================================
+   Deployment Header
+========================================================== */
+
+.capacity-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+/* ==========================================================
+   Help Button
+========================================================== */
+
+.help-button {
+
+    width: 28px;
+
+    height: 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--gradient-primary);
+
+    color: white;
+
+    font-weight: 700;
+
+    transition: var(--transition-fast);
+
+}
+
+.help-button:hover {
+
+    transform: scale(1.08);
+
+}
+
+.help-button:active {
+
+    transform: scale(.94);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   Troop Legend
+========================================================== */
+
+.troop-legend {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 24px;
+
+}
+
+.legend-item {
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+.legend-icon {
+
+    width: 28px;
+    height: 28px;
+
+}
+
+.legend-item span {
+
+    font-size: .9rem;
+
+    font-weight: 700;
+
+}
+
+/* ==========================================================
+   Setting Rows
+========================================================== */
+
+.setting-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 18px;
+
+}
+
+.setting-row:last-child {
+
+    margin-bottom: 0;
+
+}
+
+.setting-label {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+
+    flex: 1;
+
+    font-weight: 600;
+
+    color: var(--text);
+
+}
+
+/* ==========================================================
+   Modifier Icons
+========================================================== */
+
+.modifier-icon {
+
+    width: 22px;
+    height: 22px;
+
+    color: var(--color-capacity);
+
+    flex-shrink: 0;
+
+}
+
+/* ==========================================================
+   Dropdowns
+========================================================== */
+
+.setting-row select {
+
+    width: 210px;
+
+    flex-shrink: 0;
+
+    cursor: pointer;
+
+}
+
+/* ==========================================================
+   Toggle Rows
+========================================================== */
+
+.toggle-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 12px;
+
+}
+
+/* ==========================================================
+   Toggle Switch
+========================================================== */
+
+.switch {
+
+    position: relative;
+
+    display: inline-block;
+
+    width: 58px;
+    height: 32px;
+
+}
+
+.switch input {
+
+    opacity: 0;
+
+    width: 0;
+    height: 0;
+
+}
+
+.slider {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: #D9DCE5;
+
+    border-radius: 999px;
+
+    transition: var(--transition-normal);
+
+}
+
+.slider::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 4px;
+    bottom: 4px;
+
+    width: 24px;
+    height: 24px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,.18);
+
+    transition: var(--transition-normal);
+
+}
+
+.switch input:checked + .slider {
+
+    background: var(--gradient-primary);
+
+}
+
+.switch input:checked + .slider::before {
+
+    transform: translateX(26px);
+
+}
+
+/* ==========================================================
+   Event Options
+========================================================== */
+
+.event-options {
+
+    margin-top: 20px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid var(--border);
+
+}
+
+/* ==========================================================
+   Distribution Mode
+========================================================== */
+
+#distributionMode {
+
+    font-weight: 600;
+
+}
+
+/* ==========================================================
+   Select Hover
+========================================================== */
+
+select:hover {
+
+    border-color: var(--color-primary);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   Live Statistics
+========================================================== */
+
+.statistics-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(150px,1fr)
+        );
+
+    gap: 18px;
+
+}
+
+/* ==========================================================
+   Statistic Card
+========================================================== */
+
+.stat-card {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 20px 16px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    transition: var(--transition-fast);
+
+}
+
+.stat-card:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: var(--shadow-soft);
+
+}
+
+/* ==========================================================
+   Statistic Icons
+========================================================== */
+
+.stat-icon {
+
+    width: 30px;
+    height: 30px;
+
+}
+
+/* ==========================================================
+   Statistic Labels
+========================================================== */
+
+.stat-label {
+
+    font-size: .85rem;
+
+    font-weight: 700;
+
+    line-height: 1.3;
+
+}
+
+/* ==========================================================
+   Statistic Values
+========================================================== */
+
+.stat-value {
+
+    font-size: 1.45rem;
+
+    font-weight: 800;
+
+    color: var(--text);
+
+    font-variant-numeric: tabular-nums;
+
+}
+
+/* ==========================================================
+   Color Helpers
+========================================================== */
+
+.stat-card .infantry {
+
+    color: var(--color-infantry);
+
+}
+
+.stat-card .cavalry {
+
+    color: var(--color-cavalry);
+
+}
+
+.stat-card .archers {
+
+    color: var(--color-archers);
+
+}
+
+.stat-card .capacity {
+
+    color: var(--color-capacity);
+
+}
+
+/* ==========================================================
+   Animated Numbers
+========================================================== */
+
+.stat-value.animate {
+
+    animation: statPop .35s ease;
+
+}
+
+@keyframes statPop {
+
+    0% {
+
+        transform: scale(.92);
+
+        opacity: .6;
+
+    }
+
+    60% {
+
+        transform: scale(1.08);
+
+    }
+
+    100% {
+
+        transform: scale(1);
+
+        opacity: 1;
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========================================= -->
+<!-- Actions -->
+<!-- ========================================= -->
+
+<section class="action-bar">
+
+    <button
+        id="viewFormationsButton"
+        class="primary-button">
+
+        <span data-i18n="viewFormations">
+            View Formations
+        </span>
+
+    </button>
+
+</section>
+
+<!-- ========================================= -->
+<!-- Generated Formations -->
+<!-- ========================================= -->
+
+<section class="card">
+
+    <div class="section-header">
+
+        <div class="section-title">
+
+            <img
+                src="assets/icons/formations.svg"
+                class="section-icon"
+                alt="Generated Formations">
+
+            <h2 data-i18n="generatedFormations">
+                Generated Formations
+            </h2>
+
+        </div>
+
+        <button
+            id="copyAllButton"
+            class="icon-button hidden"
+            title="Copy All">
+
+            <img
+                src="assets/icons/copy.svg"
+                class="button-icon"
+                alt="Copy">
+
+        </button>
+
+    </div>
+
+    <!-- Empty State -->
+
+    <div
+        id="emptyState"
+        class="empty-state">
+
+        <div class="empty-icon">
+            ✨
+        </div>
+
+        <p>
+
+            Enter your army,<br>
+
+            choose your settings,<br>
+
+            then tap<br><br>
+
+            <strong>View Formations</strong>
+
+        </p>
+
+    </div>
+
+    <!-- Generated Formation Cards -->
+
+    <div
+        id="formationsContainer"
+        class="formations-container">
+
+    </div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- Toast -->
+<!-- ========================================= -->
+
+<div
+    id="toast"
+    class="toast">
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========================================= -->
+<!-- Deployment Help Modal -->
+<!-- ========================================= -->
+
+<dialog
+    id="deploymentHelpModal"
+    class="modal">
+
+    <div class="modal-content">
+
+        <button
+            id="closeHelpModal"
+            class="modal-close"
+            aria-label="Close">
+
+            <img
+                src="assets/icons/close.svg"
+                alt="Close">
+
+        </button>
+
+        <img
+            src="assets/images/deployment-help.jpg"
+            class="help-image"
+            alt="Deployment Capacity Guide">
+
+        <h3 data-i18n="deploymentCapacity">
+
+            Deployment Capacity
+
+        </h3>
+
+        <p
+            data-i18n="deploymentHelpText">
+
+        </p>
+
+    </div>
+
+</dialog>
+
+<!-- ========================================= -->
+<!-- Language Dropdown -->
+<!-- ========================================= -->
+
+<div
+    id="languageDropdown"
+    class="language-dropdown hidden">
+
+</div>
+
+</main>
+
+<!-- ========================================= -->
+<!-- Footer -->
+<!-- ========================================= -->
+
+<footer class="app-footer">
+
+    <p>
+
+        Made with ❤️ by
+        <strong>Oogie</strong>
+
+    </p>
+
+    <span class="version">
+
+        Version 2.0
+
+    </span>
+
+</footer>
+
+</div>
+
+<!-- ========================================= -->
+<!-- JavaScript -->
+<!-- ========================================= -->
+
+<script src="translations.js"></script>
+<script src="script.js"></script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   Formation Progress Bars
+========================================================== */
+
+.progress-wrapper {
+
+    margin: 18px 0;
+
+}
+
+.progress-bar {
+
+    width: 100%;
+    height: 14px;
+
+    display: flex;
+
+    overflow: hidden;
+
+    background: #ECECF3;
+
+    border-radius: 999px;
+
+}
+
+/* Segments */
+
+.progress-segment {
+
+    height: 100%;
+
+    transition:
+        width .45s ease;
+
+}
+
+.progress-infantry {
+
+    background: var(--color-infantry);
+
+}
+
+.progress-cavalry {
+
+    background: var(--color-cavalry);
+
+}
+
+.progress-archers {
+
+    background: var(--color-archers);
+
+}
+
+/* ==========================================================
+   Formation Footer
+========================================================== */
+
+.formation-footer {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-top: 16px;
+
+    gap: 16px;
+
+}
+
+.capacity-used {
+
+    font-size: .95rem;
+
+    font-weight: 700;
+
+    color: var(--text);
+
+    font-variant-numeric: tabular-nums;
+
+}
+
+.capacity-percent {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    font-size: .95rem;
+
+    font-weight: 800;
+
+    color: var(--color-infantry);
+
+    font-variant-numeric: tabular-nums;
+
+}
+
+/* ==========================================================
+   Copy Button
+========================================================== */
+
+.icon-button {
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    transition: var(--transition-fast);
+
+}
+
+.icon-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow-soft);
+
+}
+
+.icon-button:active {
+
+    transform: scale(.95);
+
+}
+
+.icon-button img {
+
+    width: 20px;
+    height: 20px;
+
+}
+
+/* ==========================================================
+   Utility
+========================================================== */
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================
+   Modal
+========================================================== */
+
+.modal {
+
+    border: none;
+
+    border-radius: var(--radius-card);
+
+    padding: 0;
+
+    max-width: 520px;
+
+    width: calc(100% - 32px);
+
+    margin: auto;
+
+    background: transparent;
+
+}
+
+.modal::backdrop {
+
+    background: rgba(0,0,0,.35);
+
+    backdrop-filter: blur(6px);
+
+}
+
+.modal-content {
+
+    position: relative;
+
+    background: white;
+
+    border-radius: var(--radius-card);
+
+    padding: 28px;
+
+    box-shadow: var(--shadow-hover);
+
+}
+
+.modal-close {
+
+    position: absolute;
+
+    top: 16px;
+
+    right: 16px;
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    transition: var(--transition-fast);
+
+}
+
+.modal-close:hover {
+
+    transform: rotate(90deg);
+
+}
+
+.modal-close img {
+
+    width: 18px;
+
+    height: 18px;
+
+}
+
+.help-image {
+
+    width: 100%;
+
+    border-radius: 16px;
+
+    margin-bottom: 20px;
+
+}
+
+.modal h3 {
+
+    margin-bottom: 12px;
+
+    font-size: 1.25rem;
+
+    font-weight: 700;
+
+}
+
+.modal p {
+
+    line-height: 1.7;
+
+    color: var(--text-light);
+
+}
+
+/* ==========================================================
+   Language Dropdown
+========================================================== */
+
+.language-dropdown {
+
+    position: absolute;
+
+    top: 82px;
+
+    right: 22px;
+
+    width: 220px;
+
+    background: white;
+
+    border-radius: 18px;
+
+    border: 1px solid var(--border);
+
+    box-shadow: var(--shadow-hover);
+
+    overflow: hidden;
+
+    z-index: 500;
+
+}
+
+.language-option {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px 18px;
+
+    cursor: pointer;
+
+    transition: var(--transition-fast);
+
+}
+
+.language-option:hover {
+
+    background: rgba(255,95,162,.08);
+
+}
+
+/* ==========================================================
+   Toast
+========================================================== */
+
+.toast {
+
+    position: fixed;
+
+    bottom: 28px;
+
+    left: 50%;
+
+    transform: translateX(-50%) translateY(120px);
+
+    background: rgba(38,40,58,.96);
+
+    color: white;
+
+    padding: 14px 22px;
+
+    border-radius: var(--radius-pill);
+
+    font-weight: 600;
+
+    box-shadow: var(--shadow-hover);
+
+    opacity: 0;
+
+    transition: .35s ease;
+
+    z-index: 1000;
+
+}
+
+.toast.show {
+
+    opacity: 1;
+
+    transform: translateX(-50%) translateY(0);
+
+}
+
+/* ==========================================================
+   Footer
+========================================================== */
+
+.app-footer {
+
+    text-align: center;
+
+    padding: 36px 20px;
+
+    color: var(--text-light);
+
+    font-size: .9rem;
+
+}
+
+.heart {
+
+    color: var(--color-archers);
+
+}
+
+.version {
+
+    display: block;
+
+    margin-top: 10px;
+
+    font-size: .8rem;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width: 700px) {
+
+    .army-grid,
+    .statistics-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .setting-row {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+    .setting-row select {
+
+        width: 100%;
+
+    }
+
+    .formation-troops {
+
+        flex-direction: column;
+
+        gap: 12px;
+
+    }
+
+}
+
+/* ==========================================================
+   Micro Interactions
+========================================================== */
+
+button,
+input,
+select,
+.card,
+.army-card,
+.stat-card,
+.formation-card {
+
+    transition: var(--transition-fast);
+
+}
+
+button:active {
+
+    transform: scale(.97);
+
+}
+
+input:hover,
+select:hover {
+
+    border-color: var(--color-primary);
+
+}
+
+.card:hover {
+
+    transform: translateY(-3px);
+
+}
+
+.formation-card:hover {
+
+    transform: translateY(-4px);
+
+}
+
+.stat-card:hover {
+
+    transform: translateY(-3px);
+
+}
+
+.army-card:hover {
+
+    transform: translateY(-3px);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
